@@ -1,0 +1,4 @@
+spring:
+  config:
+    import:
+      - classpath:/2022-MyRSS-secret/application.yml

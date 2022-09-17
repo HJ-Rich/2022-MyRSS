@@ -6,6 +6,11 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
+                <button type="button">
+                    <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`}>
+                        Sign in with Github
+                    </a>
+                </button>
                 <p>
                     Edit <code>src/App.js</code> and save to reload.
                 </p>
@@ -15,7 +20,7 @@ function App() {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    Learn React
+                    Learn React + test11
                 </a>
             </header>
         </div>
