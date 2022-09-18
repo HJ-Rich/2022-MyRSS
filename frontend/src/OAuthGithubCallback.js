@@ -1,7 +1,7 @@
 import {useSearchParams} from "react-router-dom";
 
 function OAuthGithubCallback() {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const code = searchParams.get("code");
 
     var requestOptions = {
