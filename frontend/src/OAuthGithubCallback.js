@@ -10,11 +10,11 @@ function OAuthGithubCallback() {
         body: JSON.stringify({"code": code}),
     };
 
-    fetch("http://localhost:8080/api/auth/login", requestOptions)
+    fetch("/api/auth/login", requestOptions)
         .then(response => response.json())
         .then(json => {
             console.log(json);
-            window.location.href = '/'
+            // window.location.href = '/'
         })
         .catch(error => console.log('error', error));
 
