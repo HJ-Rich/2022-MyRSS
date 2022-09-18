@@ -5,11 +5,12 @@ import lombok.Getter;
 @Getter
 public class LoginRequest {
 
-    private final String provider;
-    private final String code;
+    private String code;
 
-    public LoginRequest(final String provider, final String code) {
-        this.provider = provider;
+    private LoginRequest() {
+    }
+
+    public LoginRequest(final String code) {
         this.code = code;
     }
 }

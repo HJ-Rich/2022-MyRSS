@@ -2,7 +2,7 @@ package com.rssmanager;
 
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.CookieValue;
+import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @GetMapping
-    public String hello(@CookieValue(value = "SESSION", required = false) String cookie,
-                        HttpServletRequest httpServletRequest) {
-        if (Objects.nonNull(cookie)) {
+    public String hello(HttpServletRequest httpServletRequest) {
+
+        HttpSession session = httpServletRequest.getSession(false);
+
+        if (Objects.nonNull(session)) {
             return "you are logged in!";
         }
 

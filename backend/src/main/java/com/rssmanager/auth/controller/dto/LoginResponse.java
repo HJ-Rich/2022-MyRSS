@@ -1,13 +1,16 @@
 package com.rssmanager.auth.controller.dto;
 
+import com.rssmanager.member.controller.dto.MemberResponse;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class LoginResponse {
 
-    private final boolean firstLogin;
+    private final MemberResponse memberResponse;
 
-    public LoginResponse(final boolean firstLogin) {
-        this.firstLogin = firstLogin;
+    @Builder
+    public LoginResponse(final MemberResponse memberResponse) {
+        this.memberResponse = memberResponse;
     }
 }
