@@ -8,18 +8,19 @@ function OAuthGithubCallback() {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({"code": code}),
+        credentials: 'include'
     };
 
     fetch("/api/auth/login", requestOptions)
-        .then(response => response.json())
-        .then(json => {
-            console.log(json);
-            // window.location.href = '/'
-        })
+        .then(response => window.location.href = '/')
         .catch(error => console.log('error', error));
 
     return (
-        <div>로그인 중입니다..</div>
+        <div className="App">
+            <header className="App-header">
+                로그인 중입니다
+            </header>
+        </div>
     );
 }
 
