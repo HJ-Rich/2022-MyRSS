@@ -19,11 +19,21 @@ public class RedisSessionManager implements SessionManager {
     }
 
     @Override
-    public HttpSession login(final Long memberId) {
+    public HttpSession login(Long memberId) {
         HttpSession httpSession = createSessionWithFlagParameter(true);
         httpSession.setAttribute("memberId", memberId);
 
         return httpSession;
+    }
+
+    @Override
+    public <T> T getAttribute(String key) {
+        if (!isLoggedIn()) {
+            return null;
+        }
+
+        HttpSession session = createSessionWithFlagParameter(false);
+        return (T) session.getAttribute(key);
     }
 
     private HttpSession createSessionWithFlagParameter(boolean create) {

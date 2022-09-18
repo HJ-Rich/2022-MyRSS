@@ -9,7 +9,9 @@ import com.rssmanager.member.controller.dto.MemberResponse;
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.member.service.MemberService;
 import com.rssmanager.util.SessionManager;
+import java.util.Base64;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -39,11 +41,9 @@ public class GithubSessionAuthService implements AuthService {
         GithubUserInfoResponse githubUserInfoResponse = fetchUserInfoUsingAccessToken(webClient, accessToken);
         Member member = createMemberByResponseUserInfo(githubUserInfoResponse);
         MemberResponse memberResponse = memberService.save(member);
-        sessionManager.login(memberResponse.getId());
+        HttpSession httpSession = sessionManager.login(memberResponse.getId());
 
-        return LoginResponse.builder()
-                .memberResponse(memberResponse)
-                .build();
+        return new LoginResponse(new String(Base64.getEncoder().encode(httpSession.getId().getBytes())));
     }
 
     private String exchangeCodeToAccessToken(String code, WebClient webClient) {

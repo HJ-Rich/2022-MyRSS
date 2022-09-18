@@ -1,29 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Home from "./Home";
+import OAuthGithubCallback from "./OAuthGithubCallback";
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <button type="button">
-                    <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`}>
-                        Sign in with Github
-                    </a>
-                </button>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React + test11
-                </a>
-            </header>
-        </div>
+        <>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" exact element={<Home/>}></Route>
+                    <Route path="/oauth/github" exact element={<OAuthGithubCallback/>}></Route>
+                </Routes>
+            </BrowserRouter>
+        </>
     );
 }
 

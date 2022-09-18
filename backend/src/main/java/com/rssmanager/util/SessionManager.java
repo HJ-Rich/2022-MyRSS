@@ -7,4 +7,6 @@ public interface SessionManager {
     boolean isLoggedIn();
 
     HttpSession login(Long memberId);
+
+    <T> T getAttribute(String key);
 }
