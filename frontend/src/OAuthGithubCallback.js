@@ -11,7 +11,7 @@ function OAuthGithubCallback() {
         credentials: 'include'
     };
 
-    fetch("/api/auth/login", requestOptions)
+    fetch(`${process.env.REACT_APP_API_HOST}/api/auth/login`, requestOptions)
         .then(response => window.location.href = '/')
         .catch(error => console.log('error', error));
 
