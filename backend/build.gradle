@@ -21,6 +21,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.rometools:rome:1.18.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     implementation 'org.springframework.session:spring-session-data-redis'
