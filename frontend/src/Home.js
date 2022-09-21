@@ -1,4 +1,5 @@
 import {useState} from "react";
+import DefaultFeeds from "./DefaultFeeds";
 
 function Home() {
     const [loginStatus, setLoginStatus] = useState();
@@ -20,6 +21,7 @@ function Home() {
                         </a>
                     </button>
                 }
+                <DefaultFeeds/>
             </header>
         </div>
     );
