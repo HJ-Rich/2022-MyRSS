@@ -9,4 +9,6 @@ public interface SessionManager {
     HttpSession login(Long memberId);
 
     <T> T getAttribute(String key);
+
+    void invalidate();
 }

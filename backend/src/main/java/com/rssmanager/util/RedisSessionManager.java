@@ -36,6 +36,15 @@ public class RedisSessionManager implements SessionManager {
         return (T) session.getAttribute(key);
     }
 
+    @Override
+    public void invalidate() {
+        HttpSession httpSession = createSessionWithFlagParameter(false);
+
+        if (Objects.nonNull(httpSession)) {
+            httpSession.invalidate();
+        }
+    }
+
     private HttpSession createSessionWithFlagParameter(boolean create) {
         HttpServletRequest httpServletRequest =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
