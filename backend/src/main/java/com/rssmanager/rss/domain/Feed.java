@@ -17,13 +17,10 @@ public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String link;
-
+    private String description;
     private Date updateDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Rss rss;
 
@@ -31,10 +28,12 @@ public class Feed {
     }
 
     @Builder
-    public Feed(final Long id, final String title, final String link, final Date updateDate, final Rss rss) {
+    public Feed(final Long id, final String title, final String link, final String description, final Date updateDate,
+                final Rss rss) {
         this.id = id;
         this.title = title;
         this.link = link;
+        this.description = description;
         this.updateDate = updateDate;
         this.rss = rss;
     }
