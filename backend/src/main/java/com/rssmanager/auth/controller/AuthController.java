@@ -34,4 +34,11 @@ public class AuthController {
     public ResponseEntity<CertificateResponse> certificate() {
         return ResponseEntity.ok(CertificateResponse.from(sessionManager.isLoggedIn()));
     }
+
+    @PostMapping("/invalidate")
+    public ResponseEntity<Void> invalidate() {
+        sessionManager.invalidate();
+
+        return ResponseEntity.ok().build();
+    }
 }
