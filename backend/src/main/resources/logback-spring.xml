@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="logback/logback-appenders.xml"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <charset>${CONSOLE_LOG_CHARSET}</charset>
-        </encoder>
-    </appender>
+    <springProfile name="local">
+        <logger name="com.rssmanager" level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="dev">
+        <logger name="com.rssmanager" level="DEBUG">
+            <appender-ref ref="DEBUG_ASYNC_FILE"/>
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="WARN_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="com.rssmanager" level="INFO">
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="WARN_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="INFO_ASYNC_FILE"/>
+            <appender-ref ref="ERROR_ASYNC_FILE"/>
+        </logger>
+    </springProfile>
 </configuration>
