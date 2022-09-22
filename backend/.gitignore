@@ -32,3 +32,4 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+/src/main/resources/static/index.html

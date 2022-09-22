@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id "org.sonarqube" version "3.4.0.2513"
     id "jacoco"
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.rssmanager'
@@ -14,6 +15,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
 }
 
 repositories {
@@ -21,6 +27,16 @@ repositories {
 }
 
 dependencies {
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+    testImplementation 'io.rest-assured:spring-mock-mvc:4.4.0'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+
+    implementation 'com.rometools:rome:1.18.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     implementation 'org.springframework.session:spring-session-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
@@ -38,6 +54,41 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
+    outputs.dir snippetsDir
+}
+
+tasks.named('asciidoctor') {
+    configurations 'asciidoctorExt'
+    sources {
+        include("**/index.adoc", "**/common/*.adoc")
+    }
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+
+    dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task createDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static")
+}
+
+task displaceDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from("${asciidoctor.outputDir}")
+    into("build/resources/main/static")
+}
+
+bootJar {
+    dependsOn createDocument
+    dependsOn displaceDocument
 }
 
 sonarqube {

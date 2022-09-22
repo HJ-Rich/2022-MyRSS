@@ -21,7 +21,7 @@ public class MemberResponse {
     public static MemberResponse from(final Member member) {
         return MemberResponse.builder()
                 .id(member.getId())
-                .nickname(member.getNickname())
+                .nickname(member.getName())
                 .imageUrl(member.getImageUrl())
                 .build();
     }

@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class LoginResponse {
 
-    private final boolean firstLogin;
+    private final String cookie;
 
-    public LoginResponse(final boolean firstLogin) {
-        this.firstLogin = firstLogin;
+    public LoginResponse(final String cookie) {
+        this.cookie = cookie;
     }
 }
