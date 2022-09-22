@@ -32,7 +32,7 @@ class RssControllerTest extends DocumentationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/api/rss")
                 .then().log().all()
-                .apply(document("rss",
+                .apply(document("rss/list",
                         responseFields(
                                 fieldWithPath("rssResponses.[].id").type(JsonFieldType.NUMBER)
                                         .description("RSS id"),

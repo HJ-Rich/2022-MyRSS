@@ -3,4 +3,4 @@
 
 === RSS 목록 조회
 
-operation::rss[snippets='http-request,http-response']
+operation::rss/list[snippets='http-request,http-response']
