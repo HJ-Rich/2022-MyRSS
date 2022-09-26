@@ -1,6 +1,6 @@
-import Feed from "./Feed";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import NewFeed from "./NewFeed";
 
 export default function DefaultFeeds() {
     const [feeds, setFeeds] = useState([]);
@@ -47,14 +47,17 @@ export default function DefaultFeeds() {
         <>
             {
                 feeds.map(feed =>
-                    <Feed key={feed.id}
-                          id={feed.id}
-                          title={feed.title}
-                          link={feed.link}
-                          updated={feed.updateDate}>
-                    </Feed>
+                    <NewFeed
+                        key={feed.id}
+                        id={feed.id}
+                        title={feed.title}
+                        link={feed.link}
+                        description={feed.description}
+                        updateDate={feed.updateDate}
+                    ></NewFeed>
                 )
             }
+
         </>
     );
 }
