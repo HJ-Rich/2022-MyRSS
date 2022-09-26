@@ -25,11 +25,17 @@ function NewFeed(feed) {
                     <FavoriteIcon/>
                 </IconButton>
                 <IconButton aria-label="share">
-                    <ShareIcon onClick={() => window.navigator.share({
-                        url: feed.url,
-                        text: feed.description,
-                        title: feed.title
-                    })}/>
+                    <ShareIcon onClick={() => {
+                        if (navigator.share) {
+                            navigator.share({
+                                title: feed.title,
+                                url: feed.link,
+                                text: feed.description
+                            })
+                        } else {
+                            navigator.clipboard.writeText(feed.link).then(result => alert('클립보드에 복사했어요~!'));
+                        }
+                    }}/>
                 </IconButton>
             </CardActions>
         </Card>
