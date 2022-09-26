@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import NewFeed from "./NewFeed";
+import NewFeed from "../components/Feed";
 
 export default function DefaultFeeds() {
     const [feeds, setFeeds] = useState([]);
@@ -12,7 +12,6 @@ export default function DefaultFeeds() {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`)
             .then(({data}) => {
                 const newFeeds = [];
-                console.log(data)
                 data.feedResponses.forEach((feed) => newFeeds.push(feed));
                 setFeeds(presentFeeds => [...presentFeeds, ...newFeeds]);
                 pageNumber = data.nextPageable.pageNumber;
@@ -54,6 +53,8 @@ export default function DefaultFeeds() {
                         link={feed.link}
                         description={feed.description}
                         updateDate={feed.updateDate}
+                        rssTitle={feed.rss.title}
+                        iconUrl={feed.rss.iconUrl}
                     ></NewFeed>
                 )
             }

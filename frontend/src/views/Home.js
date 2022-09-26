@@ -1,6 +1,6 @@
 import {useState} from "react";
 import DefaultFeeds from "./DefaultFeeds";
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "../components/BottomNavBar";
 
 function Home() {
     const [loginStatus, setLoginStatus] = useState();
