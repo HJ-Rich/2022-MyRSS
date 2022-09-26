@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 @Transactional(readOnly = true)
@@ -29,6 +30,7 @@ public class JpaRssService implements RssService {
         return rssRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Rss save(final RssCreateRequest rssCreateRequest) {
         SyndFeed feeds;
@@ -38,14 +40,22 @@ public class JpaRssService implements RssService {
             throw new RuntimeException(e);
         }
 
-        final Rss newRssToSave = Rss.builder()
+        Rss newRssToSave = Rss.builder()
                 .title(feeds.getTitle())
                 .rssUrl(rssCreateRequest.getRssUrl())
                 .link(feeds.getUri())
-                .iconUrl(feeds.getIcon().getLink())
+                .iconUrl(findIconUrl(feeds))
                 .recommended(false)
                 .build();
 
         return rssRepository.save(newRssToSave);
+    }
+
+    private String findIconUrl(final SyndFeed feeds) {
+        if (feeds.getIcon() == null || !StringUtils.hasText(feeds.getIcon().getLink())) {
+            return RssIcons.from(feeds.getLink());
+        }
+
+        return feeds.getIcon().getLink();
     }
 }
