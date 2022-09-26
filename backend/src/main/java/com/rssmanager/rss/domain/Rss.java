@@ -14,15 +14,10 @@ public class Rss {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-
     private String rssUrl;
-
     private String link;
-
     private String iconUrl;
-
     private boolean recommended;
 
     protected Rss() {
