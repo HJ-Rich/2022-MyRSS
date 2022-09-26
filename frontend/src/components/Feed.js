@@ -21,8 +21,8 @@ function Feed(feed) {
                 </CardContent>
             </Link>
             <CardActions disableSpacing sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                <img src={feed.iconUrl} width={25} style={{padding: 1}}/>
-                <div style={{fontSize: '1.1rem', padding: 4}}>{feed.rssTitle}</div>
+                <img src={feed.iconUrl} width={25}/>
+                <div style={{fontSize: '1.1rem', padding: 4, marginLeft: 5}}>{feed.rssTitle}</div>
                 <div style={{marginLeft: 10}}></div>
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon/>
