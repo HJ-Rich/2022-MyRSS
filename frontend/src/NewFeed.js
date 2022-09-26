@@ -8,7 +8,7 @@ function NewFeed(feed) {
     const formatDate = new Intl.DateTimeFormat('kr', {dateStyle: 'medium', timeStyle: 'short'}).format(date);
 
     return (
-        <Card sx={{maxWidth: 500, marginTop: 5}}>
+        <Card sx={{maxWidth: 500, marginTop: 5, marginBottom: 5}}>
             <Link href={feed.link} target='_blank' color={'inherit'}>
                 <CardHeader
                     title={feed.title}
