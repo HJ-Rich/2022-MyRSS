@@ -25,7 +25,11 @@ function NewFeed(feed) {
                     <FavoriteIcon/>
                 </IconButton>
                 <IconButton aria-label="share">
-                    <ShareIcon/>
+                    <ShareIcon onClick={() => window.navigator.share({
+                        url: feed.url,
+                        text: feed.description,
+                        title: feed.title
+                    })}/>
                 </IconButton>
             </CardActions>
         </Card>
