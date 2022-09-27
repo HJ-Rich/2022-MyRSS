@@ -7,8 +7,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
-export default function BottomNavBar() {
-    const [value, setValue] = useState(0);
+export default function BottomNavBar(props) {
+    const [value, setValue] = useState(props.navIndex);
 
     return (
         <Box sx={{width: 500}}>

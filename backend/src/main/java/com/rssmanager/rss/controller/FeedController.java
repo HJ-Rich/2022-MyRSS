@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/api/feeds")
@@ -24,7 +25,8 @@ public class FeedController {
     }
 
     @GetMapping
-    public ResponseEntity<FeedResponses> findFeeds(Pageable pageable) {
+    public ResponseEntity<FeedResponses> findFeeds(Pageable pageable,
+                                                   @RequestParam(required = false) boolean subscribed) {
         Page<Feed> feeds = feedService.findFeeds(pageable);
 
         List<FeedResponse> feedResponse = feeds.getContent()

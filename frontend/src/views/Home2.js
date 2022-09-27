@@ -3,7 +3,7 @@ import DefaultFeeds from "./DefaultFeeds";
 import BottomNavBar from "../components/BottomNavBar";
 import axios from "axios";
 
-export default function Home(props) {
+export default function Home2(props) {
     const [loginStatus, setLoginStatus] = useState();
 
     useEffect(() => {

@@ -2,14 +2,14 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import NewFeed from "../components/Feed";
 
-export default function DefaultFeeds() {
+export default function DefaultFeeds(props) {
     const [feeds, setFeeds] = useState([]);
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`)
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}${props.fetchOption}`)
             .then(({data}) => {
                 const newFeeds = [];
                 data.feedResponses.forEach((feed) => newFeeds.push(feed));
