@@ -1,5 +1,6 @@
 import ShareIcon from '@mui/icons-material/Share';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
 import {Card, CardActions, CardContent, CardHeader, IconButton, Link, Typography} from "@mui/material";
 
@@ -24,9 +25,14 @@ function Feed(feed) {
                 <img src={feed.iconUrl} width={25}/>
                 <div style={{fontSize: '1.1rem', padding: 4, marginLeft: 5}}>{feed.rssTitle}</div>
                 <div style={{marginLeft: 10}}></div>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon/>
+                <IconButton
+                    aria-label="Like"
+                    onClick={() => alert('subscribed!!')}
+                >{
+                    (feed.subscribed === true) ? <BookmarkAddedIcon/> : <BookmarkAddIcon/>
+                }
                 </IconButton>
+
                 <IconButton
                     aria-label="share"
                     onClick={() => {

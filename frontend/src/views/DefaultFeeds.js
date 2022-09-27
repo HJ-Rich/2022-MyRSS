@@ -52,6 +52,7 @@ export default function DefaultFeeds() {
                         title={feed.title}
                         link={feed.link}
                         description={feed.description}
+                        subscribed={feed.subscribed}
                         updateDate={feed.updateDate}
                         rssTitle={feed.rss.title}
                         iconUrl={feed.rss.iconUrl}
