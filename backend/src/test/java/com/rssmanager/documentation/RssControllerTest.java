@@ -7,6 +7,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 
 import com.rssmanager.rss.domain.Rss;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 class RssControllerTest extends DocumentationTest {
 
+    @Disabled
     @Test
     void RSS_목록_조회() {
         when(rssService.findAll()).thenReturn(

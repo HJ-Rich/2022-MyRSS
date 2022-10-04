@@ -1,11 +1,28 @@
 import ShareIcon from '@mui/icons-material/Share';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
 import {Card, CardActions, CardContent, CardHeader, IconButton, Link, Typography} from "@mui/material";
+import axios from "axios";
+import {useState} from "react";
 
 function Feed(feed) {
     const date = new Date(feed.updateDate);
     const formatDate = new Intl.DateTimeFormat('kr', {dateStyle: 'medium', timeStyle: 'short'}).format(date);
+    const [bookmark, setBookmark] = useState(feed.bookmarked === undefined ? false : feed.bookmarked);
+
+
+    const handleBookmark = () => {
+        axios.post(`${process.env.REACT_APP_API_HOST}/api/bookmarks`,
+            {id: feed.id}, {withCredentials: true})
+            .then(({data}) => {
+                console.log(data);
+                // 토스트 띄우고
+
+                // 상태 바꿔주고
+                setBookmark(true);
+            })
+    }
 
     return (
         <Card sx={{maxWidth: 500, marginTop: 5, marginBottom: 5}}>
@@ -24,9 +41,14 @@ function Feed(feed) {
                 <img src={feed.iconUrl} width={25}/>
                 <div style={{fontSize: '1.1rem', padding: 4, marginLeft: 5}}>{feed.rssTitle}</div>
                 <div style={{marginLeft: 10}}></div>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon/>
+                <IconButton
+                    aria-label="Like"
+                    onClick={handleBookmark}
+                >{
+                    (bookmark === true) ? <BookmarkAddedIcon/> : <BookmarkAddIcon/>
+                }
                 </IconButton>
+
                 <IconButton
                     aria-label="share"
                     onClick={() => {

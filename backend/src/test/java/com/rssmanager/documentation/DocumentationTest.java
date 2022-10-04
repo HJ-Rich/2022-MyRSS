@@ -5,6 +5,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 
 import com.rssmanager.auth.service.AuthService;
 import com.rssmanager.member.service.MemberService;
+import com.rssmanager.rss.service.BookmarkService;
 import com.rssmanager.rss.service.FeedService;
 import com.rssmanager.rss.service.RssService;
 import com.rssmanager.util.SessionManager;
@@ -33,6 +34,8 @@ public class DocumentationTest {
     protected FeedService feedService;
     @MockBean
     protected SessionManager sessionManager;
+    @MockBean
+    protected BookmarkService bookmarkService;
     protected MockMvcRequestSpecification docsGiven;
 
     @BeforeEach

@@ -1,12 +1,14 @@
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-
 import {BottomNavigation, BottomNavigationAction, Box, Paper} from "@mui/material";
 import {useState} from "react";
+import {Link} from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import SearchIcon from '@mui/icons-material/Search';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 
-export default function BottomNavBar() {
-    const [value, setValue] = useState(0);
+export default function BottomNavBar(props) {
+    const [value, setValue] = useState(props.navIndex);
 
     return (
         <Box sx={{width: 500}}>
@@ -14,13 +16,37 @@ export default function BottomNavBar() {
                 <BottomNavigation
                     showLabels
                     value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
+                    onChange={(event, value) => {
+                        setValue(value);
                     }}
                 >
-                    <BottomNavigationAction label="Recents" icon={<RestoreIcon/>}/>
-                    <BottomNavigationAction label="Favorites" icon={<FavoriteIcon/>}/>
-                    <BottomNavigationAction label="Nearby" icon={<LocationOnIcon/>}/>
+                    <BottomNavigationAction component={Link} to={"/"} label="Home" icon={<HomeIcon/>}/>
+                    <BottomNavigationAction component={Link} to={"/search"} label="Search" icon={<SearchIcon/>}/>
+                    <BottomNavigationAction component={Link} to={"/subscribed"} label="Subscribed"
+                                            icon={<LibraryAddCheckIcon/>}/>
+                    <BottomNavigationAction component={Link} to={"/bookmarks"} label="Bookmarks"
+                                            icon={<BookmarksIcon/>}/>
+
+                    {props.loginStatus === true ?
+                        <BottomNavigationAction
+                            component={Link}
+                            to={"/profile"}
+                            label="Profile"
+                            icon={props.userInfo ?
+                                <img style={{borderRadius: '50%', maxWidth: '26px', maxHeight: '26px'}}
+                                     src={props.userInfo.imageUrl}/>
+                                :
+                                <GitHubIcon/>}
+                        />
+                        :
+                        <BottomNavigationAction
+                            component={Link}
+                            to={"/profile"}
+                            label="Github"
+                            icon={<GitHubIcon/>}
+                        >
+                        </BottomNavigationAction>
+                    }
                 </BottomNavigation>
             </Paper>
         </Box>

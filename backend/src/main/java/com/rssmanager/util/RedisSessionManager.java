@@ -1,5 +1,6 @@
 package com.rssmanager.util;
 
+import com.rssmanager.member.domain.Member;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,9 +20,9 @@ public class RedisSessionManager implements SessionManager {
     }
 
     @Override
-    public HttpSession login(Long memberId) {
+    public HttpSession login(Member member) {
         HttpSession httpSession = createSessionWithFlagParameter(true);
-        httpSession.setAttribute("memberId", memberId);
+        httpSession.setAttribute("member", member);
 
         return httpSession;
     }

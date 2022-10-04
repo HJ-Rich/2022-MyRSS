@@ -1,5 +1,6 @@
 package com.rssmanager.auth.service;
 
+import com.rssmanager.auth.controller.dto.CertificateResponse;
 import com.rssmanager.auth.controller.dto.LoginRequest;
 import com.rssmanager.auth.controller.dto.LoginResponse;
 import com.rssmanager.auth.service.dto.GithubAccessTokenResponse;
@@ -9,8 +10,8 @@ import com.rssmanager.member.controller.dto.MemberResponse;
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.member.service.MemberService;
 import com.rssmanager.util.SessionManager;
-import java.util.Base64;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,19 +36,34 @@ public class GithubSessionAuthService implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
         String code = loginRequest.getCode();
-        WebClient webClient = WebClient.create();
 
-        String accessToken = exchangeCodeToAccessToken(code, webClient);
-        GithubUserInfoResponse githubUserInfoResponse = fetchUserInfoUsingAccessToken(webClient, accessToken);
+        String accessToken = exchangeCodeToAccessToken(code);
+        if (Objects.isNull(accessToken)) {
+            throw new RuntimeException("");
+        }
+
+        GithubUserInfoResponse githubUserInfoResponse = fetchUserInfoUsingAccessToken(accessToken);
         Member member = createMemberByResponseUserInfo(githubUserInfoResponse);
-        MemberResponse memberResponse = memberService.save(member);
-        HttpSession httpSession = sessionManager.login(memberResponse.getId());
+        Member savedMember = memberService.save(member);
+        HttpSession httpSession = sessionManager.login(savedMember);
 
-        return new LoginResponse(new String(Base64.getEncoder().encode(httpSession.getId().getBytes())));
+        return new LoginResponse(true);
     }
 
-    private String exchangeCodeToAccessToken(String code, WebClient webClient) {
-        return webClient.post()
+    @Override
+    public CertificateResponse certificate() {
+        Member member = sessionManager.getAttribute("member");
+
+        if (Objects.isNull(member)) {
+            return CertificateResponse.from(false);
+        }
+
+        return CertificateResponse.from(MemberResponse.from(member));
+    }
+
+    private String exchangeCodeToAccessToken(String code) {
+        return WebClient.create()
+                .post()
                 .uri(githubOAuthConfig.getAccessTokenUrl())
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .body(Mono.just(githubOAuthConfig.createAccessTokenRequest(code)), Map.class)
@@ -57,10 +73,12 @@ public class GithubSessionAuthService implements AuthService {
                 .getAccessToken();
     }
 
-    private GithubUserInfoResponse fetchUserInfoUsingAccessToken(final WebClient webClient, final String accessToken) {
-        return webClient.get()
+    private GithubUserInfoResponse fetchUserInfoUsingAccessToken(final String accessToken) {
+        return WebClient.create()
+                .get()
                 .uri(githubOAuthConfig.getUserInfoUrl())
-                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .retrieve()
                 .bodyToMono(GithubUserInfoResponse.class)
                 .block();

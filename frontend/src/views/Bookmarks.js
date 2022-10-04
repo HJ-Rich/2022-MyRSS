@@ -1,11 +1,13 @@
-import DefaultFeeds from "./DefaultFeeds";
 import BottomNavBar from "../components/BottomNavBar";
+import BookmarkFeeds from "./BookmarkFeeds";
 
-export default function Home(props) {
+export default function Bookmarks(props) {
+
     return (
         <div className="App">
             <header className="App-header">
-                <DefaultFeeds fetchOption={props.fetchOption}/>
+                <BookmarkFeeds
+                    fetchOption={props.fetchOption}/>
             </header>
             <footer className="App-footer">
                 <BottomNavBar
@@ -14,5 +16,5 @@ export default function Home(props) {
                     navIndex={props.navIndex}/>
             </footer>
         </div>
-    );
+    )
 }
