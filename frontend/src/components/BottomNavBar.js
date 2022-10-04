@@ -26,7 +26,27 @@ export default function BottomNavBar(props) {
                                             icon={<LibraryAddCheckIcon/>}/>
                     <BottomNavigationAction component={Link} to={"/bookmarks"} label="Bookmarks"
                                             icon={<BookmarksIcon/>}/>
-                    <BottomNavigationAction component={Link} to={"/profile"} label="Profile" icon={<GitHubIcon/>}/>
+
+                    {props.loginStatus === true ?
+                        <BottomNavigationAction
+                            component={Link}
+                            to={"/profile"}
+                            label="Profile"
+                            icon={props.userInfo ?
+                                <img style={{borderRadius: '50%', maxWidth: '26px', maxHeight: '26px'}}
+                                     src={props.userInfo.imageUrl}/>
+                                :
+                                <GitHubIcon/>}
+                        />
+                        :
+                        <BottomNavigationAction
+                            component={Link}
+                            to={"/profile"}
+                            label="Github"
+                            icon={<GitHubIcon/>}
+                        >
+                        </BottomNavigationAction>
+                    }
                 </BottomNavigation>
             </Paper>
         </Box>
