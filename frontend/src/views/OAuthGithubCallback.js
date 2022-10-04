@@ -1,27 +1,30 @@
 import {useSearchParams} from "react-router-dom";
+import axios from "axios";
+import {Box, CircularProgress} from "@mui/material";
 
-function OAuthGithubCallback() {
+export default function OAuthGithubCallback() {
     const [searchParams] = useSearchParams();
     const code = searchParams.get("code");
 
-    var requestOptions = {
-        method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({"code": code}),
-        credentials: 'include'
-    };
-
-    fetch(`${process.env.REACT_APP_API_HOST}/api/auth/login`, requestOptions)
-        .then(response => window.location.href = '/')
-        .catch(error => console.log('error', error));
+    axios.post(`${process.env.REACT_APP_API_HOST}/api/auth/login`,
+        {
+            code: code
+        },
+        {
+            headers: {"Content-Type": "application/json"},
+            withCredentials: true
+        }
+    ).then(({data}) => {
+        window.location.href = '/'
+    });
 
     return (
         <div className="App">
             <header className="App-header">
-                로그인 중입니다
+                <Box sx={{display: 'flex'}}>
+                    <CircularProgress size={'3rem'}/>
+                </Box>
             </header>
         </div>
     );
 }
-
-export default OAuthGithubCallback;
