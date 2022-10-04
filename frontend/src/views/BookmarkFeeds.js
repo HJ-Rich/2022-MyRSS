@@ -3,19 +3,22 @@ import axios from "axios";
 import NewFeed from "../components/Feed";
 import LoadingSpinner from "./LoadingSpinner";
 
-export default function DefaultFeeds(props) {
-    const [feeds, setFeeds] = useState([]);
+export default function BookmarkFeeds(props) {
+    const [bookmarks, setBookmarks] = useState([]);
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}${props.fetchOption}`)
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/bookmarks?page=${pageNumber}${props.fetchOption}`,
+            {withCredentials: true})
             .then(({data}) => {
                 const newFeeds = [];
-                data.feedResponses.forEach((feed) => newFeeds.push(feed));
-                setFeeds(presentFeeds => [...presentFeeds, ...newFeeds]);
+                console.log(data)
+                debugger;
+                data.bookmarks.forEach((feed) => newFeeds.push(feed));
+                setBookmarks(presentFeeds => [...presentFeeds, ...newFeeds]);
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
@@ -49,18 +52,18 @@ export default function DefaultFeeds(props) {
         <>
             {
                 init ? <LoadingSpinner/>
-                    : feeds.map(feed =>
+                    : bookmarks.map(bookmark =>
                         <NewFeed
-                            key={feed.id}
-                            id={feed.id}
-                            title={feed.title}
-                            link={feed.link}
-                            description={feed.description}
-                            subscribed={feed.subscribed}
-                            updateDate={feed.updateDate}
-                            rssTitle={feed.rss.title}
-                            iconUrl={feed.rss.iconUrl}
-                            bookmarked={feed.bookmarked}
+                            key={bookmark.id}
+                            id={bookmark.id}
+                            title={bookmark.feed.title}
+                            link={bookmark.feed.link}
+                            description={bookmark.feed.description}
+                            subscribed={bookmark.feed.subscribed}
+                            updateDate={bookmark.feed.updateDate}
+                            rssTitle={bookmark.feed.rss.title}
+                            iconUrl={bookmark.feed.rss.iconUrl}
+                            bookmarked={true}
                         ></NewFeed>
                     )
             }

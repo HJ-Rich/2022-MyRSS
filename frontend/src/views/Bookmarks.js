@@ -1,20 +1,19 @@
 import BottomNavBar from "../components/BottomNavBar";
+import BookmarkFeeds from "./BookmarkFeeds";
 
 export default function Bookmarks(props) {
+
     return (
         <div className="App">
             <header className="App-header">
-                <div>
-                    <img src="/construction.png" style={
-                        {
-                            top: '40vh',
-                            width: '100%',
-                            maxWidth: '700px'
-                        }}/>
-                </div>
+                <BookmarkFeeds
+                    fetchOption={props.fetchOption}/>
             </header>
             <footer className="App-footer">
-                <BottomNavBar loginStatus={props.loginStatus} userInfo={props.userInfo} navIndex={props.navIndex}/>
+                <BottomNavBar
+                    loginStatus={props.loginStatus}
+                    userInfo={props.userInfo}
+                    navIndex={props.navIndex}/>
             </footer>
         </div>
     )

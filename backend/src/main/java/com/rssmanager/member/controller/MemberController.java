@@ -1,6 +1,7 @@
 package com.rssmanager.member.controller;
 
 import com.rssmanager.member.controller.dto.MemberResponse;
+import com.rssmanager.member.domain.Member;
 import com.rssmanager.member.service.MemberService;
 import com.rssmanager.util.SessionManager;
 import java.net.URI;
@@ -33,8 +34,8 @@ public class MemberController {
         }
 
         Long memberId = sessionManager.getAttribute("memberId");
-        MemberResponse memberResponse = memberService.findById(memberId);
+        Member member = memberService.findById(memberId);
 
-        return ResponseEntity.ok(memberResponse);
+        return ResponseEntity.ok(MemberResponse.from(member));
     }
 }
