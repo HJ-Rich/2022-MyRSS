@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import NewFeed from "../components/Feed";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function DefaultFeeds(props) {
     const [feeds, setFeeds] = useState([]);
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
+    const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}${props.fetchOption}`)
@@ -17,6 +19,7 @@ export default function DefaultFeeds(props) {
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
+                setInit(false);
             })
             .catch(error => {
                 console.log(error);
@@ -45,19 +48,20 @@ export default function DefaultFeeds(props) {
     return (
         <>
             {
-                feeds.map(feed =>
-                    <NewFeed
-                        key={feed.id}
-                        id={feed.id}
-                        title={feed.title}
-                        link={feed.link}
-                        description={feed.description}
-                        subscribed={feed.subscribed}
-                        updateDate={feed.updateDate}
-                        rssTitle={feed.rss.title}
-                        iconUrl={feed.rss.iconUrl}
-                    ></NewFeed>
-                )
+                init ? <LoadingSpinner/>
+                    : feeds.map(feed =>
+                        <NewFeed
+                            key={feed.id}
+                            id={feed.id}
+                            title={feed.title}
+                            link={feed.link}
+                            description={feed.description}
+                            subscribed={feed.subscribed}
+                            updateDate={feed.updateDate}
+                            rssTitle={feed.rss.title}
+                            iconUrl={feed.rss.iconUrl}
+                        ></NewFeed>
+                    )
             }
 
         </>
