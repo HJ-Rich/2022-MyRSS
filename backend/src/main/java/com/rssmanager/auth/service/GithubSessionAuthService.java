@@ -1,5 +1,6 @@
 package com.rssmanager.auth.service;
 
+import com.rssmanager.auth.controller.dto.CertificateResponse;
 import com.rssmanager.auth.controller.dto.LoginRequest;
 import com.rssmanager.auth.controller.dto.LoginResponse;
 import com.rssmanager.auth.service.dto.GithubAccessTokenResponse;
@@ -11,6 +12,7 @@ import com.rssmanager.member.service.MemberService;
 import com.rssmanager.util.SessionManager;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -44,6 +46,18 @@ public class GithubSessionAuthService implements AuthService {
         HttpSession httpSession = sessionManager.login(memberResponse.getId());
 
         return new LoginResponse(new String(Base64.getEncoder().encode(httpSession.getId().getBytes())));
+    }
+
+    @Override
+    public CertificateResponse certificate() {
+        Long memberId = sessionManager.getAttribute("memberId");
+
+        if (Objects.isNull(memberId)) {
+            return CertificateResponse.from(false);
+        }
+
+        MemberResponse member = memberService.findById(memberId);
+        return CertificateResponse.from(member);
     }
 
     private String exchangeCodeToAccessToken(String code, WebClient webClient) {
