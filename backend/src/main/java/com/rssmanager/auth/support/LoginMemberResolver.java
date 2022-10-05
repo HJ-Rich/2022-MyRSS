@@ -1,6 +1,7 @@
 package com.rssmanager.auth.support;
 
 import com.rssmanager.auth.annotation.LoginMember;
+import com.rssmanager.exception.UnauthorizedException;
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.util.SessionManager;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class LoginMemberResolver implements HandlerMethodArgumentResolver {
         final var member = sessionManager.<Member>getAttribute("member");
 
         if (Objects.isNull(member)) {
-            throw new IllegalAccessException("로그인되지 않은 회원의 요청입니다");
+            throw new UnauthorizedException();
         }
 
         return member;
