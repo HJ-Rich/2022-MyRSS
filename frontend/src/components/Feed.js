@@ -11,7 +11,6 @@ function Feed(feed) {
     const formatDate = new Intl.DateTimeFormat('kr', {dateStyle: 'medium', timeStyle: 'short'}).format(date);
     const [bookmark, setBookmark] = useState(feed.bookmarked === undefined ? false : feed.bookmarked);
 
-
     const handleBookmark = () => {
         axios.post(`${process.env.REACT_APP_API_HOST}/api/bookmarks`,
             {id: feed.id}, {withCredentials: true})
@@ -29,8 +28,14 @@ function Feed(feed) {
             <Link href={feed.link} target='_blank' color={'inherit'} underline={'none'}>
                 <CardHeader
                     title={feed.title}
-                    subheader={formatDate}
+                    titleTypographyProps={{variant: 'h6'}}
+                    style={{textAlign: 'center', paddingLeft: 30, paddingRight: 30}}
                 />
+                <CardContent>
+                    <Typography variant="body2" color="text.secondary" style={{textAlign: 'right'}}>
+                        {formatDate}
+                    </Typography>
+                </CardContent>
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
                         {feed.description}
