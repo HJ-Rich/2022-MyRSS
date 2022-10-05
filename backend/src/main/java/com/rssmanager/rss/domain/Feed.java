@@ -13,7 +13,6 @@ import lombok.Getter;
 @Getter
 @Entity
 public class Feed {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

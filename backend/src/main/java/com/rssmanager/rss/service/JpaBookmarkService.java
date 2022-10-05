@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service
 public class JpaBookmarkService implements BookmarkService {
-
     private final BookmarkRepository bookmarkRepository;
     private final FeedService feedService;
 
@@ -25,13 +24,13 @@ public class JpaBookmarkService implements BookmarkService {
     @Transactional
     @Override
     public Bookmark bookmark(final Member member, final BookmarkAddRequest bookmarkAddRequest) {
-        Feed feed = feedService.findById(bookmarkAddRequest.getId());
+        final var feed = feedService.findById(bookmarkAddRequest.getId());
+
         if (exists(member, feed)) {
             return bookmarkRepository.findByMemberIdAndFeedId(member.getId(), feed.getId()).get();
         }
-        Bookmark bookmark = new Bookmark(member, feed);
 
-        return bookmarkRepository.save(bookmark);
+        return bookmarkRepository.save(new Bookmark(member, feed));
     }
 
     private boolean exists(final Member member, final Feed feed) {

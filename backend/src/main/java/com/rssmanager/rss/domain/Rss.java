@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 @Entity
 public class Rss {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

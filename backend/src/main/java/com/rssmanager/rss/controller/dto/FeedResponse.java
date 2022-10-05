@@ -1,14 +1,12 @@
 package com.rssmanager.rss.controller.dto;
 
 import com.rssmanager.rss.domain.Feed;
-import com.rssmanager.rss.domain.Rss;
 import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class FeedResponse {
-
     private final Long id;
     private final String title;
     private final String link;
@@ -28,8 +26,8 @@ public class FeedResponse {
     }
 
     public static FeedResponse from(Feed feed) {
-        final Rss rss = feed.getRss();
-        final RssResponse rssResponse = RssResponse.from(rss);
+        final var rss = feed.getRss();
+        final var rssResponse = RssResponse.from(rss);
 
         return FeedResponse.builder()
                 .id(feed.getId())

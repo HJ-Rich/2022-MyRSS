@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 
 public interface BookmarkRepository extends Repository<Bookmark, Long> {
-
     Bookmark save(Bookmark bookmark);
 
     Page<Bookmark> findAllByMemberId(Long memberId, Pageable pageable);

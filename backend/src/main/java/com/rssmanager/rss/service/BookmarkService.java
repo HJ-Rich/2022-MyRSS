@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BookmarkService {
-
-
     Bookmark bookmark(Member member, BookmarkAddRequest bookmarkAddRequest);
 
     Page<Bookmark> findByMemberId(Long memberId, Pageable pageable);

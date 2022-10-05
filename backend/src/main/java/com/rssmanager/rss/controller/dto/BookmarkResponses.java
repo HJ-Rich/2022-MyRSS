@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 @Getter
 public class BookmarkResponses {
-
     private final List<BookmarkResponse> bookmarks;
     private final boolean hasNext;
     private final Pageable nextPageable;

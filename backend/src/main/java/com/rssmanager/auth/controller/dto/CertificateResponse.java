@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class CertificateResponse {
-
     private final boolean loggedIn;
     private final MemberResponse member;
 
@@ -18,11 +17,11 @@ public class CertificateResponse {
         this(loggedIn, null);
     }
 
-    public static CertificateResponse from(boolean loggedIn) {
+    public static CertificateResponse from(final boolean loggedIn) {
         return new CertificateResponse(loggedIn);
     }
 
-    public static CertificateResponse from(MemberResponse member) {
+    public static CertificateResponse from(final MemberResponse member) {
         return new CertificateResponse(true, member);
     }
 }
