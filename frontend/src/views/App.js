@@ -66,11 +66,13 @@ function App() {
                         </Route>
                         <Route path="/bookmarks" exact
                                element={
-                                   <Bookmarks
-                                       loginStatus={loginStatus}
-                                       userInfo={userInfo}
-                                       fetchOption={''}
-                                       navIndex={3}/>
+                                   loginStatus ?
+                                       <Bookmarks
+                                           loginStatus={loginStatus}
+                                           userInfo={userInfo}
+                                           fetchOption={''}
+                                           navIndex={3}/>
+                                       : <GithubLogin loginStatus={loginStatus} navIndex={4}/>
                                }>
                         </Route>
                         <Route path="/profile" exact
