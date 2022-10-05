@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 @Transactional(readOnly = true)
 @Service
 public class JpaRssService implements RssService {
-
     private final RssRepository rssRepository;
 
     public JpaRssService(final RssRepository rssRepository) {
@@ -40,7 +39,7 @@ public class JpaRssService implements RssService {
             throw new RuntimeException(e);
         }
 
-        Rss newRssToSave = Rss.builder()
+        final var newRssToSave = Rss.builder()
                 .title(feeds.getTitle())
                 .rssUrl(rssCreateRequest.getRssUrl())
                 .link(feeds.getUri())

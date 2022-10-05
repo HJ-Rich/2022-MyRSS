@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class BookmarkAddRequest {
-
     private Long id;
 
     public BookmarkAddRequest() {

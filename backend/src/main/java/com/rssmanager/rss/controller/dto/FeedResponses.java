@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 @Getter
 public class FeedResponses {
-
     private final List<FeedResponse> feedResponses;
     private final boolean hasNext;
     private final Pageable nextPageable;

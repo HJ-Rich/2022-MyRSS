@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class RssCreateRequest {
-
     private String rssUrl;
 
     protected RssCreateRequest() {

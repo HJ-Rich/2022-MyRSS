@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ArgumentResolverConfig implements WebMvcConfigurer {
-
     private final SessionManager sessionManager;
 
     public ArgumentResolverConfig(final SessionManager sessionManager) {
@@ -18,7 +17,7 @@ public class ArgumentResolverConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+    public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(loginMemberArgumentResolver());
     }
 

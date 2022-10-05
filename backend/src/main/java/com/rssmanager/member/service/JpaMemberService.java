@@ -2,7 +2,6 @@ package com.rssmanager.member.service;
 
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.member.repository.MemberRepository;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +24,12 @@ public class JpaMemberService implements MemberService {
     @Transactional
     @Override
     public Member save(final Member member) {
-        Long providerId = member.getProviderId();
-        Optional<Member> byProviderId = memberRepository.findByProviderId(providerId);
+        final var providerId = member.getProviderId();
+        final var byProviderId = memberRepository.findByProviderId(providerId);
 
         if (byProviderId.isPresent()) {
-            Member foundMember = memberRepository.findByProviderId(providerId)
+            return memberRepository.findByProviderId(providerId)
                     .orElseThrow(IllegalArgumentException::new);
-            return foundMember;
         }
 
         return memberRepository.save(member);

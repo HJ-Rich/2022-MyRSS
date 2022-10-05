@@ -4,7 +4,6 @@ import com.rssmanager.member.domain.Member;
 import javax.servlet.http.HttpSession;
 
 public interface SessionManager {
-
     boolean isLoggedIn();
 
     HttpSession login(Member member);

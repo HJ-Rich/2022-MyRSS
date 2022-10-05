@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/feeds")
 @RestController
 public class FeedController {
-
     private final FeedService feedService;
 
     public FeedController(final FeedService feedService) {
@@ -19,8 +18,8 @@ public class FeedController {
     }
 
     @GetMapping
-    public ResponseEntity<FeedResponses> findFeeds(Pageable pageable) {
-        final FeedResponses feeds = feedService.findFeeds(pageable);
+    public ResponseEntity<FeedResponses> findFeeds(final Pageable pageable) {
+        final var feeds = feedService.findFeeds(pageable);
 
         return ResponseEntity.ok(feeds);
     }

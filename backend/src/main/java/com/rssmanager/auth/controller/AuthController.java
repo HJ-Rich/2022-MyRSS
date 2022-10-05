@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
-
     private final AuthService authService;
     private final SessionManager sessionManager;
 
@@ -24,22 +23,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = authService.login(loginRequest);
-
+    public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest loginRequest) {
+        final var loginResponse = authService.login(loginRequest);
         return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/certificate")
     public ResponseEntity<CertificateResponse> certificate() {
-        CertificateResponse certificateResponse = authService.certificate();
+        final var certificateResponse = authService.certificate();
         return ResponseEntity.ok(certificateResponse);
     }
 
     @PostMapping("/invalidate")
     public ResponseEntity<Void> invalidate() {
         sessionManager.invalidate();
-
         return ResponseEntity.ok().build();
     }
 }

@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
 public interface RssRepository extends Repository<Rss, Long> {
-
     Rss save(Rss rss);
 
     Optional<Rss> findByRssUrl(String rssUrl);

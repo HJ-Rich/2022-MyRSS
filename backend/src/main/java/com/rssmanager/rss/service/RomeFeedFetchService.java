@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service
 public class RomeFeedFetchService implements FeedFetchService {
-
     private final RssRepository rssRepository;
     private final FeedRepository feedRepository;
 
@@ -32,11 +31,11 @@ public class RomeFeedFetchService implements FeedFetchService {
 
     @Transactional
     @Override
-    public void saveNewFeedsByRss(String rssUrl) {
-        SyndFeed rssInfo = fetchSyndFeed(rssUrl);
-        Rss rss = createRssBySyndFeed(rssUrl, rssInfo);
+    public void saveNewFeedsByRss(final String rssUrl) {
+        final var rssInfo = fetchSyndFeed(rssUrl);
+        final var rss = createRssBySyndFeed(rssUrl, rssInfo);
 
-        List<Feed> newFeedsToSave = rssInfo.getEntries()
+        final var newFeedsToSave = rssInfo.getEntries()
                 .stream()
                 .filter(syndEntry -> !feedRepository.existsByLink(syndEntry.getLink()))
                 .map(syndEntry -> createFeedFromSyndEntry(rss, syndEntry))
@@ -45,8 +44,8 @@ public class RomeFeedFetchService implements FeedFetchService {
         feedRepository.saveAll(newFeedsToSave);
     }
 
-    private static Feed createFeedFromSyndEntry(Rss rss, SyndEntry syndEntry) {
-        Date date = syndEntry.getPublishedDate();
+    private static Feed createFeedFromSyndEntry(final Rss rss, final SyndEntry syndEntry) {
+        var date = syndEntry.getPublishedDate();
         if (Objects.isNull(date)) {
             date = syndEntry.getUpdatedDate();
         }
@@ -63,19 +62,19 @@ public class RomeFeedFetchService implements FeedFetchService {
     }
 
     @Override
-    public List<Feed> findFeedsByRss(String rssUrl) {
+    public List<Feed> findFeedsByRss(final String rssUrl) {
 
         return null;
     }
 
     @Override
-    public Rss fetchRss(String rssUrl) {
-        SyndFeed rssInfo = fetchSyndFeed(rssUrl);
+    public Rss fetchRss(final String rssUrl) {
+        final var rssInfo = fetchSyndFeed(rssUrl);
 
         return createRssBySyndFeed(rssUrl, rssInfo);
     }
 
-    private SyndFeed fetchSyndFeed(String rssUrl) {
+    private SyndFeed fetchSyndFeed(final String rssUrl) {
         try {
             return new SyndFeedInput().build(new XmlReader(new URL(rssUrl)));
         } catch (FeedException | IOException e) {
@@ -83,7 +82,7 @@ public class RomeFeedFetchService implements FeedFetchService {
         }
     }
 
-    private Rss createRssBySyndFeed(String rssUrl, SyndFeed rssInfo) {
+    private Rss createRssBySyndFeed(final String rssUrl, final SyndFeed rssInfo) {
         return Rss.builder()
                 .title(rssInfo.getTitle())
                 .link(rssInfo.getLink())

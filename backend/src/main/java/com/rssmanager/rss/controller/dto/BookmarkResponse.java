@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class BookmarkResponse {
-
     private Long id;
     private FeedResponse feed;
 
