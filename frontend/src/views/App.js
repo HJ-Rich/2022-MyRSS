@@ -61,7 +61,7 @@ function App() {
                                                      userInfo={userInfo}
                                                      fetchOption={'&subscribed=true'}
                                                      navIndex={2}/>
-                                       : <GithubLogin loginStatus={loginStatus} navIndex={4}/>
+                                       : <GithubLogin needAlert={true} loginStatus={loginStatus} navIndex={4}/>
                                }>
                         </Route>
                         <Route path="/bookmarks" exact
@@ -72,7 +72,7 @@ function App() {
                                            userInfo={userInfo}
                                            fetchOption={''}
                                            navIndex={3}/>
-                                       : <GithubLogin loginStatus={loginStatus} navIndex={4}/>
+                                       : <GithubLogin needAlert={true} loginStatus={loginStatus} navIndex={4}/>
                                }>
                         </Route>
                         <Route path="/profile" exact
