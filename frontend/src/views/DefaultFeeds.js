@@ -20,6 +20,15 @@ export default function DefaultFeeds(props) {
                 hasNext = data.hasNext;
                 loading = false;
                 setInit(false);
+
+                if (!hasNext) {
+                    setTimeout(() => {
+                        const aa = document.querySelectorAll('.MuiCard-root')
+                        const target = aa[aa.length - 1]
+                        console.log(target)
+                        target.style.marginBottom = '100px';
+                    }, 100)
+                }
             })
             .catch(error => {
                 console.log(error);
