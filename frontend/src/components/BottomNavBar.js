@@ -42,7 +42,7 @@ export default function BottomNavBar(props) {
                         <BottomNavigationAction
                             component={Link}
                             to={"/profile"}
-                            label="Github"
+                            label="Login"
                             icon={<GitHubIcon/>}
                         >
                         </BottomNavigationAction>
