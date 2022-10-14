@@ -23,11 +23,13 @@ public class Rss {
     }
 
     @Builder
-    public Rss(final Long id, final String title, final String rssUrl, final String link, final String iconUrl) {
+    public Rss(final Long id, final String title, final String rssUrl, final String link, final String iconUrl,
+               final boolean recommended) {
         this.id = id;
         this.title = title;
         this.rssUrl = rssUrl;
         this.link = link;
         this.iconUrl = iconUrl;
+        this.recommended = recommended;
     }
 }

@@ -8,6 +8,7 @@ import com.rssmanager.member.service.MemberService;
 import com.rssmanager.rss.service.BookmarkService;
 import com.rssmanager.rss.service.FeedService;
 import com.rssmanager.rss.service.RssService;
+import com.rssmanager.rss.service.SubscribeService;
 import com.rssmanager.util.SessionManager;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
@@ -36,6 +37,8 @@ public class DocumentationTest {
     protected SessionManager sessionManager;
     @MockBean
     protected BookmarkService bookmarkService;
+    @MockBean
+    protected SubscribeService subscribeService;
     protected MockMvcRequestSpecification docsGiven;
 
     @BeforeEach
