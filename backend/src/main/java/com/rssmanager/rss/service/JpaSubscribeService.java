@@ -1,6 +1,7 @@
 package com.rssmanager.rss.service;
 
 import static com.rssmanager.rss.domain.QFeed.feed;
+import static com.rssmanager.rss.domain.QRss.rss;
 import static com.rssmanager.rss.domain.QSubscribe.subscribe;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -63,28 +64,6 @@ public class JpaSubscribeService implements SubscribeService {
         return subscribeRepository.save(new Subscribe(member, savedRss)).getId();
     }
 
-    @Override
-    public FeedResponses findSubscribedFeeds(final Member member, final Pageable pageable) {
-        final var subscribedFeeds = jpaQueryFactory.selectFrom(feed)
-                .leftJoin(subscribe).on(feed.rss.id.eq(subscribe.rss.id))
-                .where(subscribe.member.id.eq(member.getId()))
-                .orderBy(feed.updateDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
-                .fetch()
-                .stream()
-                .map(FeedResponse::from)
-                .collect(Collectors.toList());
-
-        final var hasNext = subscribedFeeds.size() > pageable.getPageSize();
-        final int pageNumber = pageable.getPageNumber();
-
-        return FeedResponses.builder()
-                .feedResponses(subscribedFeeds)
-                .hasNext(hasNext)
-                .nextPageable(pageable.withPage(hasNext ? pageNumber + 1 : pageNumber))
-                .build();
-    }
 
     private String getRequestedRssUrl(final String url) {
         if (url.endsWith("/")) {
@@ -102,6 +81,7 @@ public class JpaSubscribeService implements SubscribeService {
 
         final var subscribe = new Subscribe(member, rss);
         final var savedSubscribe = subscribeRepository.save(subscribe);
+
         return savedSubscribe.getId();
     }
 
@@ -126,32 +106,29 @@ public class JpaSubscribeService implements SubscribeService {
             iconUrl = icon.getUrl();
         }
 
-        final var rss = Rss.builder()
+        return Rss.builder()
                 .title(feedInfo.getTitle())
                 .rssUrl(rssUrl)
                 .link(feedInfo.getLink())
                 .iconUrl(iconUrl)
                 .build();
-        return rss;
     }
 
     private List<Feed> convertFeed(final SyndFeed feedInfo, final Rss savedRss) {
-        final var feeds = feedInfo.getEntries()
+        return feedInfo.getEntries()
                 .stream()
                 .map(newFeed -> createFeed(savedRss, newFeed))
                 .collect(Collectors.toList());
-        return feeds;
     }
 
     private Feed createFeed(final Rss rss, final SyndEntry newFeed) {
-        final var feed = Feed.builder()
+        return Feed.builder()
                 .title(newFeed.getTitle())
                 .link(newFeed.getLink())
                 .description(findDescription(newFeed))
                 .updateDate(findDate(newFeed))
                 .rss(rss)
                 .build();
-        return feed;
     }
 
     private String findDescription(final SyndEntry newFeed) {
@@ -189,5 +166,48 @@ public class JpaSubscribeService implements SubscribeService {
         }
 
         return updatedDate;
+    }
+
+    @Override
+    public FeedResponses findSubscribedFeeds(final Member member, final Pageable pageable) {
+        final var subscribedFeeds = findSubscribedFeedsByMember(member, pageable);
+
+        final var feeds = convertToResponse(pageable, subscribedFeeds);
+        final var hasNext = subscribedFeeds.size() > pageable.getPageSize();
+        final var nextPageable = createNextPageable(pageable, hasNext);
+
+        return FeedResponses.builder()
+                .feedResponses(feeds)
+                .hasNext(hasNext)
+                .nextPageable(nextPageable)
+                .build();
+    }
+
+    private List<Feed> findSubscribedFeedsByMember(final Member member, final Pageable pageable) {
+        return jpaQueryFactory.selectFrom(feed)
+                .leftJoin(feed.rss, rss).fetchJoin()
+                .leftJoin(subscribe).on(feed.rss.id.eq(subscribe.rss.id))
+                .where(subscribe.member.id.eq(member.getId()))
+                .orderBy(feed.updateDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+    }
+
+    private List<FeedResponse> convertToResponse(final Pageable pageable, final List<Feed> subscribedFeeds) {
+        return subscribedFeeds.stream()
+                .limit(pageable.getPageSize())
+                .map(FeedResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    private Pageable createNextPageable(final Pageable pageable, final boolean hasNext) {
+        var pageNumber = pageable.getPageNumber();
+
+        if (hasNext) {
+            pageNumber++;
+        }
+
+        return pageable.withPage(pageNumber);
     }
 }
