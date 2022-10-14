@@ -88,7 +88,6 @@ public class RomeFeedFetchService implements FeedFetchService {
                 .link(rssInfo.getLink())
                 .iconUrl(rssInfo.getIcon().getUrl())
                 .rssUrl(rssUrl)
-                .recommended(false)
                 .build();
     }
 }

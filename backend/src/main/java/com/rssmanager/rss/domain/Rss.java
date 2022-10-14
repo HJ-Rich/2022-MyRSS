@@ -17,7 +17,7 @@ public class Rss {
     private String rssUrl;
     private String link;
     private String iconUrl;
-    private boolean recommended;
+    private boolean recommended = false;
 
     protected Rss() {
     }

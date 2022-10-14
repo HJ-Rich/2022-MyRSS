@@ -39,14 +39,7 @@ public class JpaRssService implements RssService {
             throw new RuntimeException(e);
         }
 
-        final var newRssToSave = Rss.builder()
-                .title(feeds.getTitle())
-                .rssUrl(rssCreateRequest.getRssUrl())
-                .link(feeds.getUri())
-                .iconUrl(findIconUrl(feeds))
-                .recommended(false)
-                .build();
-
+        final var newRssToSave = buildRss(rssCreateRequest, feeds);
         return rssRepository.save(newRssToSave);
     }
 
@@ -56,5 +49,14 @@ public class JpaRssService implements RssService {
         }
 
         return feeds.getIcon().getLink();
+    }
+
+    private Rss buildRss(final RssCreateRequest rssCreateRequest, final SyndFeed feeds) {
+        return Rss.builder()
+                .title(feeds.getTitle())
+                .rssUrl(rssCreateRequest.getRssUrl())
+                .link(feeds.getUri())
+                .iconUrl(findIconUrl(feeds))
+                .build();
     }
 }
