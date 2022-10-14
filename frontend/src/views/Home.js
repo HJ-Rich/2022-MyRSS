@@ -5,7 +5,7 @@ export default function Home(props) {
     return (
         <div className="App">
             <header className="App-header">
-                <DefaultFeeds fetchOption={props.fetchOption}/>
+                <DefaultFeeds/>
             </header>
             <footer className="App-footer">
                 <BottomNavBar

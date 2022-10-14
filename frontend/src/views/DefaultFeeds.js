@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import NewFeed from "../components/Feed";
 import LoadingSpinner from "./LoadingSpinner";
+import Feed from "../components/Feed";
 
-export default function DefaultFeeds(props) {
+export default function DefaultFeeds() {
     const [feeds, setFeeds] = useState([]);
     let pageNumber = 0;
     let loading = false;
@@ -11,7 +11,7 @@ export default function DefaultFeeds(props) {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}${props.fetchOption}`)
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`)
             .then(({data}) => {
                 const newFeeds = [];
                 data.feedResponses.forEach((feed) => newFeeds.push(feed));
@@ -59,7 +59,7 @@ export default function DefaultFeeds(props) {
             {
                 init ? <LoadingSpinner/>
                     : feeds.map(feed =>
-                        <NewFeed
+                        <Feed
                             key={feed.id}
                             id={feed.id}
                             title={feed.title}
@@ -70,10 +70,9 @@ export default function DefaultFeeds(props) {
                             rssTitle={feed.rss.title}
                             iconUrl={feed.rss.iconUrl}
                             bookmarked={feed.bookmarked}
-                        ></NewFeed>
+                        ></Feed>
                     )
             }
-
         </>
     );
 }

@@ -7,9 +7,10 @@ import Subscribed from "./Subscribed";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import GithubLogin from "./GithubLogin";
-import Profile from "./Profile";
-import Search from "./Search";
+import Menu from "./Menu";
+import Social from "./Social";
 import Bookmarks from "./Bookmarks";
+import ManageRss from "./ManageRss";
 
 const darkTheme = createTheme({
     palette: {
@@ -41,26 +42,24 @@ function App() {
                                    <Home
                                        loginStatus={loginStatus}
                                        userInfo={userInfo}
-                                       fetchOption={''}
                                        navIndex={0}/>
                                }>
                         </Route>
-                        <Route path="/search" exact
+                        <Route path="/social" exact
                                element={
-                                   <Search
+                                   <Social
                                        loginStatus={loginStatus}
                                        userInfo={userInfo}
-                                       fetchOption={''}
                                        navIndex={1}/>
                                }>
                         </Route>
                         <Route path="/subscribed" exact
                                element={
                                    loginStatus
-                                       ? <Subscribed loginStatus={loginStatus}
-                                                     userInfo={userInfo}
-                                                     fetchOption={'&subscribed=true'}
-                                                     navIndex={2}/>
+                                       ? <Subscribed
+                                           loginStatus={loginStatus}
+                                           userInfo={userInfo}
+                                           navIndex={2}/>
                                        : <GithubLogin needAlert={true} loginStatus={loginStatus} navIndex={4}/>
                                }>
                         </Route>
@@ -70,24 +69,36 @@ function App() {
                                        <Bookmarks
                                            loginStatus={loginStatus}
                                            userInfo={userInfo}
-                                           fetchOption={''}
                                            navIndex={3}/>
                                        : <GithubLogin needAlert={true} loginStatus={loginStatus} navIndex={4}/>
                                }>
                         </Route>
-                        <Route path="/profile" exact
+                        <Route path="/menu" exact
                                element={
                                    loginStatus
-                                       ? <Profile loginStatus={loginStatus}
-                                                  userInfo={userInfo}
-                                                  fetchOption={'&subscribed=true'}
-                                                  navIndex={4}/>
+                                       ? <Menu
+                                           loginStatus={loginStatus}
+                                           userInfo={userInfo}
+                                           navIndex={4}/>
                                        : <GithubLogin loginStatus={loginStatus} navIndex={4}/>
                                }
                         >
                         </Route>
+
+                        <Route path="/manage-rss" exact
+                               element={
+                                   loginStatus
+                                       ? <ManageRss
+                                           loginStatus={loginStatus}
+                                           userInfo={userInfo}
+                                           navIndex={4}/>
+                                       : <GithubLogin loginStatus={loginStatus} navIndex={4}/>
+                               }
+                        >
+                        </Route>
+
                         <Route path="/oauth/github" exact
-                               element={<OAuthGithubCallback/>}></Route>
+                               element={<OAuthGithubCallback/>}/>
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>

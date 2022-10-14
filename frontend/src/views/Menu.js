@@ -1,11 +1,13 @@
 import BottomNavBar from "../components/BottomNavBar";
-import BookmarkFeeds from "./BookmarkFeeds";
+import MenuView from "./MenuView";
 
-export default function Bookmarks(props) {
+export default function Menu(props) {
     return (
         <div className="App">
             <header className="App-header">
-                <BookmarkFeeds/>
+                <MenuView
+                    loginStatus={props.loginStatus}
+                    userInfo={props.userInfo}/>
             </header>
             <footer className="App-footer">
                 <BottomNavBar

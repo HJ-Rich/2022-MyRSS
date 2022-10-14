@@ -2,10 +2,10 @@ import {BottomNavigation, BottomNavigationAction, Box, Paper} from "@mui/materia
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import SearchIcon from '@mui/icons-material/Search';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import ForumIcon from '@mui/icons-material/Forum';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function BottomNavBar(props) {
     const [value, setValue] = useState(props.navIndex);
@@ -21,32 +21,12 @@ export default function BottomNavBar(props) {
                     }}
                 >
                     <BottomNavigationAction component={Link} to={"/"} label="Home" icon={<HomeIcon/>}/>
-                    <BottomNavigationAction component={Link} to={"/search"} label="Search" icon={<SearchIcon/>}/>
+                    <BottomNavigationAction component={Link} to={"/social"} label="Social" icon={<ForumIcon/>}/>
                     <BottomNavigationAction component={Link} to={"/subscribed"} label="Subscribed"
                                             icon={<LibraryAddCheckIcon/>}/>
                     <BottomNavigationAction component={Link} to={"/bookmarks"} label="Bookmarks"
                                             icon={<BookmarksIcon/>}/>
-
-                    {props.loginStatus === true ?
-                        <BottomNavigationAction
-                            component={Link}
-                            to={"/profile"}
-                            label="Profile"
-                            icon={props.userInfo ?
-                                <img style={{borderRadius: '50%', maxWidth: '26px', maxHeight: '26px'}}
-                                     src={props.userInfo.imageUrl}/>
-                                :
-                                <GitHubIcon/>}
-                        />
-                        :
-                        <BottomNavigationAction
-                            component={Link}
-                            to={"/profile"}
-                            label="Login"
-                            icon={<GitHubIcon/>}
-                        >
-                        </BottomNavigationAction>
-                    }
+                    <BottomNavigationAction component={Link} to={"/menu"} label="Menu" icon={<MenuIcon/>}/>
                 </BottomNavigation>
             </Paper>
         </Box>
