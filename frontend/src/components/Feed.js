@@ -34,7 +34,7 @@ export default function Feed(feed) {
                     북마크에 추가했어요 😃
                 </Alert>
             </Snackbar>
-            <Card sx={{maxWidth: 500, marginTop: 5, marginBottom: 5}}>
+            <Card sx={{maxWidth: '100%', marginTop: 5, marginBottom: 5}}>
                 <Link href={feed.link} target='_blank' color={'inherit'} underline={'none'}>
                     <CardHeader
                         title={feed.title}

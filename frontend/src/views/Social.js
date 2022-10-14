@@ -1,11 +1,12 @@
 import BottomNavBar from "../components/BottomNavBar";
-import BookmarkFeeds from "./BookmarkFeeds";
 
-export default function Bookmarks(props) {
+export default function Social(props) {
     return (
         <div className="App">
             <header className="App-header">
-                <BookmarkFeeds/>
+                <div>
+                    <img src="/construction.png" style={{top: '40vh', width: '100%', maxWidth: '700px'}}/>
+                </div>
             </header>
             <footer className="App-footer">
                 <BottomNavBar

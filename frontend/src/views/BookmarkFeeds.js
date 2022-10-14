@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
 import {NavLink} from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
 import Feed from "../components/Feed";
 
-export default function BookmarkFeeds(props) {
+export default function BookmarkFeeds() {
     const [bookmarks, setBookmarks] = useState([]);
     let pageNumber = 0;
     let loading = false;
@@ -12,7 +12,7 @@ export default function BookmarkFeeds(props) {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/bookmarks?page=${pageNumber}${props.fetchOption}`,
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/bookmarks?page=${pageNumber}`,
             {withCredentials: true})
             .then(({data}) => {
                 const newFeeds = [];

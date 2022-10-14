@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import LoadingSpinner from "../views/LoadingSpinner";
-import Feed from "./Feed";
+import LoadingSpinner from "./LoadingSpinner";
+import Feed from "../components/Feed";
+import {NavLink} from "react-router-dom";
 
-export default function SubscribedFeeds(props) {
+export default function SubscribedFeeds() {
     const [feeds, setFeeds] = useState([]);
     let pageNumber = 0;
     let loading = false;
@@ -11,7 +12,8 @@ export default function SubscribedFeeds(props) {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/subscribes?page=${pageNumber}`, {withCredentials: true})
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/subscribes?page=${pageNumber}`,
+            {withCredentials: true})
             .then(({data}) => {
                 const newFeeds = [];
                 data.feedResponses.forEach((feed) => newFeeds.push(feed));
@@ -58,20 +60,29 @@ export default function SubscribedFeeds(props) {
         <>
             {
                 init ? <LoadingSpinner/>
-                    : feeds.map(feed =>
-                        <Feed
-                            key={feed.id}
-                            id={feed.id}
-                            title={feed.title}
-                            link={feed.link}
-                            description={feed.description}
-                            subscribed={feed.subscribed}
-                            updateDate={feed.updateDate}
-                            rssTitle={feed.rss.title}
-                            iconUrl={feed.rss.iconUrl}
-                            bookmarked={feed.bookmarked}
-                        ></Feed>
-                    )
+                    :
+                    feeds.length === 0 ?
+                        <div>
+                            <div>아직 북마크한 피드가 없어요 😃</div>
+                            <div>&emsp;</div>
+                            <div><NavLink to={'/'} style={{color: 'inherit', fontWeight: 500}}>북마크 추가하러 가기</NavLink>
+                            </div>
+                        </div>
+                        :
+                        feeds.map(feed =>
+                            <Feed
+                                key={feed.id}
+                                id={feed.id}
+                                title={feed.title}
+                                link={feed.link}
+                                description={feed.description}
+                                subscribed={feed.subscribed}
+                                updateDate={feed.updateDate}
+                                rssTitle={feed.rss.title}
+                                iconUrl={feed.rss.iconUrl}
+                                bookmarked={feed.bookmarked}
+                            ></Feed>
+                        )
             }
         </>
     );
