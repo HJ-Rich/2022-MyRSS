@@ -17,19 +17,17 @@ public class Rss {
     private String rssUrl;
     private String link;
     private String iconUrl;
-    private boolean recommended;
+    private boolean recommended = false;
 
     protected Rss() {
     }
 
     @Builder
-    public Rss(final Long id, final String title, final String rssUrl, final String link, final String iconUrl,
-               final boolean recommended) {
+    public Rss(final Long id, final String title, final String rssUrl, final String link, final String iconUrl) {
         this.id = id;
         this.title = title;
         this.rssUrl = rssUrl;
         this.link = link;
         this.iconUrl = iconUrl;
-        this.recommended = recommended;
     }
 }

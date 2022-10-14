@@ -1,28 +1,31 @@
-import DefaultFeeds from "./DefaultFeeds";
 import BottomNavBar from "../components/BottomNavBar";
 import AddIcon from '@mui/icons-material/Add';
-import {Box, Button, Fab, Modal, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Fab, Modal, Snackbar, TextField, Typography} from "@mui/material";
 import {useState} from "react";
+import axios from "axios";
+import SubscribedFeeds from "../components/SubscribedFeeds";
 
 export default function Subscribed(props) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const httpRegex = '^(https|http):\\/\\/[^\\s$.?#].[^\\s]*$';
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
+
 
     const handleSubscribe = (e) => {
-
+        const input = document.getElementById('outlined-basic').value;
         if (input.length === 0) {
             return;
         }
 
-        // axios.post(`${process.env.REACT_APP_API_HOST}/api/subscribes`,
-        //     {url: input}, {withCredentials: true})
-        //     .then(({data}) => {
-        //         console.log(data);
-        //
-        //         location.reload();
-        //     });
+        axios.post(`${process.env.REACT_APP_API_HOST}/api/subscribes`,
+            {url: input}, {withCredentials: true})
+            .then(({data}) => {
+                handleClose()
+                setOpenSuccess(true)
+                setTimeout(() => location.reload(), 500)
+            }).catch(error => setOpenError(true));
     }
 
     const style = {
@@ -43,8 +46,20 @@ export default function Subscribed(props) {
                 <Fab size='small' color="primary" aria-label="add" style={{position: 'fixed', top: '85vh'}}>
                     <AddIcon onClick={handleOpen}/>
                 </Fab>
-                <DefaultFeeds fetchOption={props.fetchOption}/>
-
+                <SubscribedFeeds/>
+                <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={openSuccess}
+                          autoHideDuration={800}
+                          onClose={() => setOpen(false)}>
+                    <Alert onClose={() => setOpenSuccess(false)} severity={'success'} sx={{width: '100%'}}>
+                        요청하신 RSS를 구독했어요 😃
+                    </Alert>
+                </Snackbar>
+                <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={openError} autoHideDuration={800}
+                          onClose={() => setOpen(false)}>
+                    <Alert onClose={() => setOpenError(false)} severity={'error'} sx={{width: '100%'}}>
+                        요청에 실패했어요.. 다른 주소로 시도해볼까요? 😅
+                    </Alert>
+                </Snackbar>
                 <Modal
                     open={open}
                     onClose={handleClose}

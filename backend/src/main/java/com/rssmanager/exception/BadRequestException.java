@@ -10,4 +10,8 @@ public class BadRequestException extends MyRSSException {
     public BadRequestException(final String message) {
         super(message);
     }
+
+    public BadRequestException(final String message, final Exception e) {
+        super(message, e);
+    }
 }
