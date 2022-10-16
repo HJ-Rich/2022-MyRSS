@@ -75,7 +75,6 @@ export default function BookmarkFeeds() {
                             ></Feed>
                         )
             }
-
         </>
     );
 }
