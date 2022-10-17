@@ -3,6 +3,7 @@ import axios from "axios";
 import LoadingSpinner from "../views/LoadingSpinner";
 import RssComponent from "./RssComponent";
 import {Button, TextField} from "@mui/material";
+import {NavLink} from "react-router-dom";
 
 export default function Rss() {
     const [rss, setRss] = useState([]);
@@ -35,6 +36,7 @@ export default function Rss() {
 
     return (
         <>
+            <NavLink to='/howTo' style={{color: 'inherit'}}> RSS 등록 방법이 궁금하신가요? 💁‍ </NavLink>
             <div style={{
                 display: 'flex',
                 flexDirection: 'row',

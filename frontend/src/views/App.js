@@ -11,6 +11,7 @@ import Menu from "./Menu";
 import Social from "./Social";
 import Bookmarks from "./Bookmarks";
 import ManageRss from "./ManageRss";
+import HowTo from "./HowTo";
 
 const darkTheme = createTheme({
     palette: {
@@ -96,6 +97,12 @@ function App() {
                                }
                         >
                         </Route>
+
+                        <Route path="/howTo" exact element={
+                            <HowTo loginStatus={loginStatus}
+                                   userInfo={userInfo}
+                                   navIndex={4}/>
+                        }/>
 
                         <Route path="/oauth/github" exact
                                element={<OAuthGithubCallback/>}/>
