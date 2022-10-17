@@ -2,14 +2,12 @@ package com.rssmanager.rss;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import com.rssmanager.rss.domain.Feed;
 import com.rssmanager.rss.domain.Rss;
 import com.rssmanager.rss.repository.FeedRepository;
 import com.rssmanager.rss.repository.RssRepository;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -17,11 +15,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Component
 public class FeedFetchJob {
     private static final int SECOND = 1000;
@@ -37,12 +37,18 @@ public class FeedFetchJob {
 
     @Async
     @Scheduled(fixedDelay = HOUR)
-    public void fetchFeeds() throws IOException, FeedException {
+    public void fetchFeeds() {
         final var registeredRss = rssRepository.findAll();
         final var newFeedsToSave = new ArrayList<Feed>();
 
         for (Rss rss : registeredRss) {
-            final var feeds = new SyndFeedInput().build(new XmlReader(new URL(rss.getRssUrl())));
+            SyndFeed feeds;
+            try {
+                feeds = new SyndFeedInput().build(new XmlReader(new URL(rss.getRssUrl())));
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                continue;
+            }
             final var newFeeds = filterNewFeeds(rss, feeds);
             newFeedsToSave.addAll(newFeeds);
         }

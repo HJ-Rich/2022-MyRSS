@@ -3,7 +3,6 @@ import Rss from "../components/Rss";
 
 export default function ManageRss(props) {
 
-
     return (
         <div className="App">
             <header className="App-header">

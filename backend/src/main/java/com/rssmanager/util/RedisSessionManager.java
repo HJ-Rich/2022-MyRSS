@@ -27,11 +27,12 @@ public class RedisSessionManager implements SessionManager {
 
     @Override
     public <T> T getAttribute(final String key) {
-        if (!isLoggedIn()) {
+        final var session = createSessionWithFlagParameter(false);
+
+        if (Objects.isNull(session)) {
             return null;
         }
 
-        final var session = createSessionWithFlagParameter(false);
         return (T) session.getAttribute(key);
     }
 

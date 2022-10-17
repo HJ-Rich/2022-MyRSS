@@ -18,6 +18,17 @@ export default function Rss() {
             .catch(error => console.log(error))
     }, []);
 
+    const handleSubscribe = (e) => {
+        const requestUrl = e.target.previousSibling.querySelector('input').value;
+        axios.post(`${process.env.REACT_APP_API_HOST}/api/subscribes`,
+            {url: requestUrl},
+            {withCredentials: true})
+            .then(({data}) => {
+                location.reload();
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <>
             {
@@ -25,7 +36,7 @@ export default function Rss() {
                     :
                     rss.length === 0 ?
                         <div>
-                            <div>아직 구독하는 RSS가 없어요 😃</div>
+                            <div>첫 RSS를 추가해볼까요? 😃</div>
                             <div>&emsp;</div>
                         </div>
                         :
@@ -42,9 +53,14 @@ export default function Rss() {
                             ></RssComponent>
                         )
             }
-            <div style={{display: 'flex', flexDirection: 'row', width: '90%', top: 10}}>
-                <TextField id="outlined-basic" label="구독할 RSS를 입력해주세요" variant="outlined" style={{width: "100%"}}/>
-                <Button onClick={() => alert('hi')} style={{marginLeft: 10}} variant="contained">Add</Button>
+            <div style={{display: 'flex', flexDirection: 'row', width: '90%', top: 10, justifyContent: 'center'}}>
+                <TextField
+                    id="outlined-basic"
+                    label="구독할 RSS를 입력해주세요"
+                    variant="outlined"
+                    style={{width: "100%", maxWidth: 500}}
+                />
+                <Button onClick={handleSubscribe} style={{marginLeft: 10}} variant="contained">Add</Button>
             </div>
         </>
     );

@@ -9,7 +9,7 @@ export default function RssComponent(props) {
             `${process.env.REACT_APP_API_HOST}/api/rss?id=${props.id}`,
             {withCredentials: true})
             .then(({data}) => {
-                alert('삭제 굳')
+                location.reload()
             }).catch(error => console.log(error))
     }
 

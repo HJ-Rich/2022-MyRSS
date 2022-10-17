@@ -18,10 +18,10 @@ public class BookmarkResponse {
         this.feed = feed;
     }
 
-    public static BookmarkResponse from(final Bookmark bookmark) {
+    public static BookmarkResponse from(final Bookmark bookmark, final boolean bookmarked) {
         return BookmarkResponse.builder()
                 .id(bookmark.getId())
-                .feed(FeedResponse.from(bookmark.getFeed()))
+                .feed(FeedResponse.from(bookmark.getFeed(), bookmarked))
                 .build();
     }
 }

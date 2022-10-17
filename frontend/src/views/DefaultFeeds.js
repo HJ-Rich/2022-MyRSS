@@ -11,7 +11,8 @@ export default function DefaultFeeds() {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`)
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`,
+            {withCredentials: true})
             .then(({data}) => {
                 const newFeeds = [];
                 data.feedResponses.forEach((feed) => newFeeds.push(feed));
