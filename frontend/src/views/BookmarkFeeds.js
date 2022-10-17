@@ -9,33 +9,38 @@ export default function BookmarkFeeds() {
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
+    let isEmpty = false;
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/bookmarks?page=${pageNumber}`,
             {withCredentials: true})
             .then(({data}) => {
+                if (pageNumber === 0 && data.bookmarks.length === 0) {
+                    isEmpty = true;
+                }
+
                 setBookmarks(presentFeeds => {
                     const present = JSON.stringify(presentFeeds);
-
                     const feedsToPush = []
+
                     data.bookmarks.forEach(feed => {
                             if (!present.includes(JSON.stringify(feed))) {
                                 feedsToPush.push(feed)
                             }
                         }
                     );
+
                     return [...presentFeeds, ...feedsToPush];
                 });
-
 
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
                 setInit(false);
 
-                if (!hasNext) {
-                    document.getElementById('bottomNotifier').style.display = 'inherit';
+                if (!hasNext && !isEmpty) {
+                    setTimeout(() => document.getElementById('bottomNotifier').style.display = 'inherit', 200)
                 }
             })
             .catch(error => {
@@ -90,7 +95,7 @@ export default function BookmarkFeeds() {
                             ></Feed>
                         )
             }
-            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>더 이상 불러올 피드가 없습니다 🙌
+            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>모두 불러왔어요 🙌
             </div>
         </>
     );

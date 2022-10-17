@@ -14,6 +14,10 @@ export default function Rss() {
             .then(({data}) => {
                 setRss(data.rssResponses)
                 setInit(false);
+
+                if (data.rssResponses.length !== 0) {
+                    document.getElementById('bottomIdentifier').style.display = 'inherit';
+                }
             })
             .catch(error => console.log(error))
     }, []);
@@ -31,6 +35,22 @@ export default function Rss() {
 
     return (
         <>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: '90%',
+                marginTop: 20,
+                marginBottom: 20,
+                justifyContent: 'center'
+            }}>
+                <TextField
+                    id="outlined-basic"
+                    label="구독할 RSS를 입력해주세요"
+                    variant="outlined"
+                    style={{width: "100%", maxWidth: 500}}
+                />
+                <Button onClick={handleSubscribe} style={{marginLeft: 10}} variant="contained">Add</Button>
+            </div>
             {
                 init ? <LoadingSpinner/>
                     :
@@ -53,15 +73,8 @@ export default function Rss() {
                             ></RssComponent>
                         )
             }
-            <div style={{display: 'flex', flexDirection: 'row', width: '90%', top: 10, justifyContent: 'center'}}>
-                <TextField
-                    id="outlined-basic"
-                    label="구독할 RSS를 입력해주세요"
-                    variant="outlined"
-                    style={{width: "100%", maxWidth: 500}}
-                />
-                <Button onClick={handleSubscribe} style={{marginLeft: 10}} variant="contained">Add</Button>
-            </div>
+
+            <div id="bottomIdentifier" style={{display: 'none', height: 200}}>모두 불러왔어요 🙌</div>
         </>
     );
 }
