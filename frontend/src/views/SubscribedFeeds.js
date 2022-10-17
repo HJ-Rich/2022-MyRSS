@@ -9,6 +9,7 @@ export default function SubscribedFeeds() {
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
+    let isEmpty = false;
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
@@ -16,6 +17,10 @@ export default function SubscribedFeeds() {
             {withCredentials: true})
             .then(({data}) => {
                 setFeeds(presentFeeds => {
+                    if (pageNumber === 0 && data.feedResponses.length === 0) {
+                        isEmpty = true;
+                    }
+
                     const present = JSON.stringify(presentFeeds);
 
                     const feedsToPush = []
@@ -33,7 +38,7 @@ export default function SubscribedFeeds() {
                 loading = false;
                 setInit(false);
 
-                if (!hasNext) {
+                if (!hasNext && !isEmpty) {
                     document.getElementById('bottomNotifier').style.display = 'inherit';
                 }
             })
