@@ -1,6 +1,7 @@
 package com.rssmanager.auth.support;
 
 import com.rssmanager.auth.annotation.LoginMember;
+import com.rssmanager.exception.UnauthorizedException;
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.util.SessionManager;
 import java.util.Objects;
@@ -11,7 +12,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class LoginMemberResolver implements HandlerMethodArgumentResolver {
-
     private final SessionManager sessionManager;
 
     public LoginMemberResolver(final SessionManager sessionManager) {
@@ -28,10 +28,10 @@ public class LoginMemberResolver implements HandlerMethodArgumentResolver {
                                   final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory)
             throws Exception {
 
-        Member member = sessionManager.getAttribute("member");
+        final var member = sessionManager.<Member>getAttribute("member");
 
         if (Objects.isNull(member)) {
-            throw new IllegalAccessException("로그인되지 않은 회원의 요청입니다");
+            throw new UnauthorizedException();
         }
 
         return member;

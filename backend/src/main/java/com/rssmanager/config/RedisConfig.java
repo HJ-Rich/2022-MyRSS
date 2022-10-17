@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 public class RedisConfig {
-
     @Value("${spring.redis.host}")
     public String host;
 
@@ -22,8 +21,8 @@ public class RedisConfig {
 
 
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, String> redisTemplate(final RedisConnectionFactory connectionFactory) {
+        final var redisTemplate = new RedisTemplate<String, String>();
         redisTemplate.setConnectionFactory(connectionFactory);
 
         return redisTemplate;
@@ -31,7 +30,7 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        final var configuration = new RedisStandaloneConfiguration();
         configuration.setHostName(this.host);
         configuration.setPort(this.port);
         configuration.setPassword(this.password);

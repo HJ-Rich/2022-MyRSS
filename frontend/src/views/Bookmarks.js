@@ -2,12 +2,10 @@ import BottomNavBar from "../components/BottomNavBar";
 import BookmarkFeeds from "./BookmarkFeeds";
 
 export default function Bookmarks(props) {
-
     return (
         <div className="App">
             <header className="App-header">
-                <BookmarkFeeds
-                    fetchOption={props.fetchOption}/>
+                <BookmarkFeeds/>
             </header>
             <footer className="App-footer">
                 <BottomNavBar

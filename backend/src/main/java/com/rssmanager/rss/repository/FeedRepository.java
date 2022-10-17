@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 
 public interface FeedRepository extends Repository<Feed, Long> {
-
     List<Feed> findAll();
 
     Page<Feed> findAll(Pageable pageable);

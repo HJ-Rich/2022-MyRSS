@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import NewFeed from "../components/Feed";
 import LoadingSpinner from "./LoadingSpinner";
+import Feed from "../components/Feed";
 
-export default function DefaultFeeds(props) {
+export default function DefaultFeeds() {
     const [feeds, setFeeds] = useState([]);
     let pageNumber = 0;
     let loading = false;
@@ -11,15 +11,30 @@ export default function DefaultFeeds(props) {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}${props.fetchOption}`)
+        axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`,
+            {withCredentials: true})
             .then(({data}) => {
-                const newFeeds = [];
-                data.feedResponses.forEach((feed) => newFeeds.push(feed));
-                setFeeds(presentFeeds => [...presentFeeds, ...newFeeds]);
+                setFeeds(presentFeeds => {
+                    const present = JSON.stringify(presentFeeds);
+
+                    const feedsToPush = []
+                    data.feedResponses.forEach(feed => {
+                            if (!present.includes(JSON.stringify(feed))) {
+                                feedsToPush.push(feed)
+                            }
+                        }
+                    );
+                    return [...presentFeeds, ...feedsToPush];
+                });
+
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
                 setInit(false);
+
+                if (!hasNext) {
+                    setTimeout(() => document.getElementById('bottomNotifier').style.display = 'inherit', 200)
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -50,7 +65,7 @@ export default function DefaultFeeds(props) {
             {
                 init ? <LoadingSpinner/>
                     : feeds.map(feed =>
-                        <NewFeed
+                        <Feed
                             key={feed.id}
                             id={feed.id}
                             title={feed.title}
@@ -61,10 +76,11 @@ export default function DefaultFeeds(props) {
                             rssTitle={feed.rss.title}
                             iconUrl={feed.rss.iconUrl}
                             bookmarked={feed.bookmarked}
-                        ></NewFeed>
+                        ></Feed>
                     )
             }
-
+            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>모두 불러왔어요 🙌
+            </div>
         </>
     );
 }

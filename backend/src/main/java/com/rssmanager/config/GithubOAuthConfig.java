@@ -9,7 +9,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConstructorBinding
 @ConfigurationProperties(prefix = "oauth.github")
 public class GithubOAuthConfig {
-
     private final String clientId;
     private final String clientSecret;
     private final String accessTokenUrl;
@@ -23,7 +22,7 @@ public class GithubOAuthConfig {
         this.userInfoUrl = userInfoUrl;
     }
 
-    public Map<String, String> createAccessTokenRequest(String code) {
+    public Map<String, String> createAccessTokenRequest(final String code) {
         return Map.of(
                 "client_id", clientId,
                 "client_secret", clientSecret,

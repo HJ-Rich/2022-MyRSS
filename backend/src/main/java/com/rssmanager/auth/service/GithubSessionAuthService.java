@@ -12,7 +12,6 @@ import com.rssmanager.member.service.MemberService;
 import com.rssmanager.util.SessionManager;
 import java.util.Map;
 import java.util.Objects;
-import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class GithubSessionAuthService implements AuthService {
-
     private final MemberService memberService;
     private final SessionManager sessionManager;
     private final GithubOAuthConfig githubOAuthConfig;
@@ -34,25 +32,25 @@ public class GithubSessionAuthService implements AuthService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
-        String code = loginRequest.getCode();
+    public LoginResponse login(final LoginRequest loginRequest) {
+        final var code = loginRequest.getCode();
 
-        String accessToken = exchangeCodeToAccessToken(code);
+        final var accessToken = exchangeCodeToAccessToken(code);
         if (Objects.isNull(accessToken)) {
             throw new RuntimeException("");
         }
 
-        GithubUserInfoResponse githubUserInfoResponse = fetchUserInfoUsingAccessToken(accessToken);
-        Member member = createMemberByResponseUserInfo(githubUserInfoResponse);
-        Member savedMember = memberService.save(member);
-        HttpSession httpSession = sessionManager.login(savedMember);
+        final var githubUserInfoResponse = fetchUserInfoUsingAccessToken(accessToken);
+        final var member = createMemberByResponseUserInfo(githubUserInfoResponse);
+        final var savedMember = memberService.save(member);
+        final var httpSession = sessionManager.login(savedMember);
 
         return new LoginResponse(true);
     }
 
     @Override
     public CertificateResponse certificate() {
-        Member member = sessionManager.getAttribute("member");
+        final var member = sessionManager.<Member>getAttribute("member");
 
         if (Objects.isNull(member)) {
             return CertificateResponse.from(false);
@@ -61,7 +59,7 @@ public class GithubSessionAuthService implements AuthService {
         return CertificateResponse.from(MemberResponse.from(member));
     }
 
-    private String exchangeCodeToAccessToken(String code) {
+    private String exchangeCodeToAccessToken(final String code) {
         return WebClient.create()
                 .post()
                 .uri(githubOAuthConfig.getAccessTokenUrl())
@@ -84,7 +82,7 @@ public class GithubSessionAuthService implements AuthService {
                 .block();
     }
 
-    private Member createMemberByResponseUserInfo(GithubUserInfoResponse githubUserInfoResponse) {
+    private Member createMemberByResponseUserInfo(final GithubUserInfoResponse githubUserInfoResponse) {
         return Member.builder()
                 .providerId(githubUserInfoResponse.getProviderId())
                 .name(githubUserInfoResponse.getName())

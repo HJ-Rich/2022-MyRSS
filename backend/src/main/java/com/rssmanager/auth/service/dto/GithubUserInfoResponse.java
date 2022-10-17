@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class GithubUserInfoResponse {
-
     @JsonProperty("id")
     private Long providerId;
     private String name;

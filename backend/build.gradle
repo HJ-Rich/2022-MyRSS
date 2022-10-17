@@ -5,6 +5,7 @@ plugins {
     id "org.sonarqube" version "3.4.0.2513"
     id "jacoco"
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.rssmanager'
@@ -27,6 +28,11 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jsoup:jsoup:1.15.3'
+
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    implementation 'com.querydsl:querydsl-apt:5.0.0'
+
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
     testImplementation 'io.rest-assured:spring-mock-mvc:4.4.0'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
@@ -105,4 +111,23 @@ jacocoTestReport {
     reports {
         xml.enabled true
     }
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }

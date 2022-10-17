@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class BookmarkAddResponse {
-
     private final Long id;
 
     public BookmarkAddResponse(final Long id) {

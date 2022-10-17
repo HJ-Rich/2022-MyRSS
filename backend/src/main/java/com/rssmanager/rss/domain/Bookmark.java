@@ -14,7 +14,6 @@ import lombok.Getter;
 @Getter
 @Entity
 public class Bookmark {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

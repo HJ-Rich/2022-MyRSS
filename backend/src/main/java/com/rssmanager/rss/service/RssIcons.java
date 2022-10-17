@@ -5,7 +5,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public enum RssIcons {
-
     TISTORY(rssLink -> rssLink.contains("tistory.com"), rssLink -> String.format("%s/favicon.ico", rssLink)),
     NONE(rssLink -> false, rssLink -> ""),
     ;
@@ -18,7 +17,7 @@ public enum RssIcons {
         this.iconUrlCreator = iconUrlCreator;
     }
 
-    public static String from(String rssLink) {
+    public static String from(final String rssLink) {
         return Arrays.stream(values())
                 .filter(rssIcon -> rssIcon.rssName.test(rssLink))
                 .findAny()

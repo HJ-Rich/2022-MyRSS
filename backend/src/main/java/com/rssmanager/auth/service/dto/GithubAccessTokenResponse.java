@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class GithubAccessTokenResponse {
-
     @JsonProperty("access_token")
     private String accessToken;
     private String scope;
