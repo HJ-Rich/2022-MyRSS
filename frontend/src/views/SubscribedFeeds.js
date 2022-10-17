@@ -63,9 +63,9 @@ export default function SubscribedFeeds() {
                     :
                     feeds.length === 0 ?
                         <div>
-                            <div>아직 북마크한 피드가 없어요 😃</div>
+                            <div>아직 구독하는 RSS가 없어요 😃</div>
                             <div>&emsp;</div>
-                            <div><NavLink to={'/'} style={{color: 'inherit', fontWeight: 500}}>북마크 추가하러 가기</NavLink>
+                            <div><NavLink to={'/rss'} style={{color: 'inherit', fontWeight: 500}}>RSS 추가하러 가기</NavLink>
                             </div>
                         </div>
                         :

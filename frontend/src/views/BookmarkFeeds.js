@@ -63,7 +63,7 @@ export default function BookmarkFeeds() {
                         bookmarks.map(bookmark =>
                             <Feed
                                 key={bookmark.id}
-                                id={bookmark.id}
+                                id={bookmark.feed.id}
                                 title={bookmark.feed.title}
                                 link={bookmark.feed.link}
                                 description={bookmark.feed.description}
@@ -75,7 +75,6 @@ export default function BookmarkFeeds() {
                             ></Feed>
                         )
             }
-
         </>
     );
 }

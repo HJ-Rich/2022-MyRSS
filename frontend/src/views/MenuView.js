@@ -70,7 +70,7 @@ export default function MenuView(props) {
 
             <Profile userInfo={props.userInfo} loginStatus={props.loginStatus}></Profile>
             <div style={{marginTop: 50}}>
-                <a href={'/manage-rss'}>
+                <a href={'/rss'}>
                     <Button variant="outlined" color="success"><RssFeedIcon/> &emsp;Manage RSS</Button>
                 </a>
 

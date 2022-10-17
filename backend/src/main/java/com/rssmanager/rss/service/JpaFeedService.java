@@ -1,15 +1,20 @@
 package com.rssmanager.rss.service;
 
+import static com.rssmanager.rss.domain.QBookmark.bookmark;
 import static com.rssmanager.rss.domain.QFeed.feed;
 import static com.rssmanager.rss.domain.QRss.rss;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.rssmanager.member.domain.Member;
 import com.rssmanager.rss.controller.dto.FeedResponse;
 import com.rssmanager.rss.controller.dto.FeedResponses;
 import com.rssmanager.rss.domain.Feed;
 import com.rssmanager.rss.repository.FeedRepository;
+import com.rssmanager.util.SessionManager;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,10 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class JpaFeedService implements FeedService {
     private final FeedRepository feedRepository;
     private final JPAQueryFactory jpaQueryFactory;
+    private final SessionManager sessionManager;
 
-    public JpaFeedService(final FeedRepository feedRepository, final JPAQueryFactory jpaQueryFactory) {
+    public JpaFeedService(final FeedRepository feedRepository, final JPAQueryFactory jpaQueryFactory,
+                          final SessionManager sessionManager) {
         this.feedRepository = feedRepository;
         this.jpaQueryFactory = jpaQueryFactory;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -53,9 +61,24 @@ public class JpaFeedService implements FeedService {
     }
 
     private List<FeedResponse> convertToResponse(final Pageable pageable, final List<Feed> feeds) {
+        final var member = sessionManager.<Member>getAttribute("member");
+        if (Objects.isNull(member)) {
+            return feeds.stream()
+                    .limit(pageable.getPageSize())
+                    .map(feed -> FeedResponse.from(feed, false))
+                    .collect(Collectors.toList());
+        }
+
+        final var bookmakredFeedIds = new HashSet<>(
+                jpaQueryFactory.select(bookmark.feed.id)
+                        .from(bookmark)
+                        .where(bookmark.member.id.eq(member.getId()))
+                        .fetch()
+        );
+
         return feeds.stream()
                 .limit(pageable.getPageSize())
-                .map(FeedResponse::from)
+                .map(feed -> FeedResponse.from(feed, bookmakredFeedIds.contains(feed.getId())))
                 .collect(Collectors.toList());
     }
 

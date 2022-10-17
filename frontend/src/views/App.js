@@ -85,7 +85,7 @@ function App() {
                         >
                         </Route>
 
-                        <Route path="/manage-rss" exact
+                        <Route path="/rss" exact
                                element={
                                    loginStatus
                                        ? <ManageRss

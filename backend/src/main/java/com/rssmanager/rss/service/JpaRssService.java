@@ -1,9 +1,14 @@
 package com.rssmanager.rss.service;
 
+import static com.rssmanager.rss.domain.QRss.rss;
+import static com.rssmanager.rss.domain.QSubscribe.subscribe;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import com.rssmanager.member.domain.Member;
 import com.rssmanager.rss.controller.dto.RssCreateRequest;
 import com.rssmanager.rss.domain.Rss;
 import com.rssmanager.rss.repository.RssRepository;
@@ -19,14 +24,20 @@ import org.springframework.util.StringUtils;
 @Service
 public class JpaRssService implements RssService {
     private final RssRepository rssRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
-    public JpaRssService(final RssRepository rssRepository) {
+    public JpaRssService(final RssRepository rssRepository, final JPAQueryFactory jpaQueryFactory) {
         this.rssRepository = rssRepository;
+        this.jpaQueryFactory = jpaQueryFactory;
     }
 
     @Override
-    public List<Rss> findAll() {
-        return rssRepository.findAll();
+    public List<Rss> findByMember(final Member member) {
+        return jpaQueryFactory.selectFrom(rss)
+                .leftJoin(subscribe)
+                .on(subscribe.rss.id.eq(rss.id))
+                .where(subscribe.member.id.eq(member.getId()))
+                .fetch();
     }
 
     @Transactional
@@ -41,6 +52,15 @@ public class JpaRssService implements RssService {
 
         final var newRssToSave = buildRss(rssCreateRequest, feeds);
         return rssRepository.save(newRssToSave);
+    }
+
+    @Transactional
+    @Override
+    public void unsubscribe(final Member member, final Long id) {
+        jpaQueryFactory.delete(subscribe)
+                .where(subscribe.member.id.eq(member.getId()))
+                .where(subscribe.rss.id.eq(id))
+                .execute();
     }
 
     private String findIconUrl(final SyndFeed feeds) {

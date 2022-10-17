@@ -1,5 +1,6 @@
 package com.rssmanager.rss.service;
 
+import static com.rssmanager.rss.domain.QBookmark.bookmark;
 import static com.rssmanager.rss.domain.QFeed.feed;
 import static com.rssmanager.rss.domain.QRss.rss;
 import static com.rssmanager.rss.domain.QSubscribe.subscribe;
@@ -21,8 +22,10 @@ import com.rssmanager.rss.repository.FeedRepository;
 import com.rssmanager.rss.repository.RssRepository;
 import com.rssmanager.rss.repository.SubscribeRepository;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,19 +41,22 @@ public class JpaSubscribeService implements SubscribeService {
     private final FeedRepository feedRepository;
     private final RssRepository rssRepository;
     private final JPAQueryFactory jpaQueryFactory;
+    private final RssParser parser;
 
     public JpaSubscribeService(final SubscribeRepository subscribeRepository, final FeedRepository feedRepository,
-                               final RssRepository rssRepository, final JPAQueryFactory jpaQueryFactory) {
+                               final RssRepository rssRepository, final JPAQueryFactory jpaQueryFactory,
+                               final RssParser parser) {
         this.subscribeRepository = subscribeRepository;
         this.feedRepository = feedRepository;
         this.rssRepository = rssRepository;
         this.jpaQueryFactory = jpaQueryFactory;
+        this.parser = parser;
     }
 
     @Transactional
     @Override
     public Long subscribe(final Member member, final SubscribeRequest subscribeRequest) {
-        final var requestUrl = getRequestedRssUrl(subscribeRequest.getUrl());
+        final var requestUrl = parser.parse(subscribeRequest.getUrl());
 
         final var foundRss = rssRepository.findByRssUrl(requestUrl);
         if (foundRss.isPresent()) {
@@ -62,15 +68,6 @@ public class JpaSubscribeService implements SubscribeService {
         feedRepository.saveAll(convertFeed(feedInfo, savedRss));
 
         return subscribeRepository.save(new Subscribe(member, savedRss)).getId();
-    }
-
-
-    private String getRequestedRssUrl(final String url) {
-        if (url.endsWith("/")) {
-            return url.substring(0, url.length() - 1);
-        }
-
-        return url;
     }
 
     private Long registerSubscribe(final Member member, final Rss rss) {
@@ -124,7 +121,7 @@ public class JpaSubscribeService implements SubscribeService {
     private Feed createFeed(final Rss rss, final SyndEntry newFeed) {
         return Feed.builder()
                 .title(newFeed.getTitle())
-                .link(newFeed.getLink())
+                .link(URLDecoder.decode(newFeed.getLink(), StandardCharsets.UTF_8))
                 .description(findDescription(newFeed))
                 .updateDate(findDate(newFeed))
                 .rss(rss)
@@ -172,7 +169,7 @@ public class JpaSubscribeService implements SubscribeService {
     public FeedResponses findSubscribedFeeds(final Member member, final Pageable pageable) {
         final var subscribedFeeds = findSubscribedFeedsByMember(member, pageable);
 
-        final var feeds = convertToResponse(pageable, subscribedFeeds);
+        final var feeds = convertToResponse(member, pageable, subscribedFeeds);
         final var hasNext = subscribedFeeds.size() > pageable.getPageSize();
         final var nextPageable = createNextPageable(pageable, hasNext);
 
@@ -194,10 +191,18 @@ public class JpaSubscribeService implements SubscribeService {
                 .fetch();
     }
 
-    private List<FeedResponse> convertToResponse(final Pageable pageable, final List<Feed> subscribedFeeds) {
+    private List<FeedResponse> convertToResponse(final Member member, final Pageable pageable,
+                                                 final List<Feed> subscribedFeeds) {
+        final var bookmarkedFeedIds = new HashSet<>(
+                jpaQueryFactory.select(bookmark.feed.id)
+                        .from(bookmark)
+                        .where(bookmark.member.id.eq(member.getId()))
+                        .fetch()
+        );
+
         return subscribedFeeds.stream()
                 .limit(pageable.getPageSize())
-                .map(FeedResponse::from)
+                .map(feed -> FeedResponse.from(feed, bookmarkedFeedIds.contains(feed.getId())))
                 .collect(Collectors.toList());
     }
 

@@ -16,15 +16,6 @@ export default function Profile(props) {
                 <TextField
                     disabled
                     id="filled-disabled"
-                    label="Id"
-                    defaultValue={props.userInfo.id}
-                    variant="filled"
-                />
-            </div>
-            <div>
-                <TextField
-                    disabled
-                    id="filled-disabled"
                     label="Nickname"
                     defaultValue={props.userInfo.nickname}
                     variant="filled"
