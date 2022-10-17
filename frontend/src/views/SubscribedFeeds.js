@@ -2,29 +2,34 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import Feed from "../components/Feed";
-import {NavLink} from "react-router-dom";
 
 export default function SubscribedFeeds() {
     const [feeds, setFeeds] = useState(new Set());
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
+    let isEmpty = false;
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/subscribes?page=${pageNumber}`,
             {withCredentials: true})
             .then(({data}) => {
+                if (pageNumber === 0 && data.feedResponses.length === 0) {
+                    isEmpty = true;
+                }
+
                 setFeeds(presentFeeds => {
                     const present = JSON.stringify(presentFeeds);
-
                     const feedsToPush = []
+
                     data.feedResponses.forEach(feed => {
                             if (!present.includes(JSON.stringify(feed))) {
                                 feedsToPush.push(feed)
                             }
                         }
                     );
+
                     return [...presentFeeds, ...feedsToPush];
                 });
 
@@ -33,8 +38,8 @@ export default function SubscribedFeeds() {
                 loading = false;
                 setInit(false);
 
-                if (!hasNext) {
-                    document.getElementById('bottomNotifier').style.display = 'inherit';
+                if (!hasNext && !isEmpty) {
+                    setTimeout(() => document.getElementById('bottomNotifier').style.display = 'inherit', 200)
                 }
             })
             .catch(error => {
@@ -67,12 +72,7 @@ export default function SubscribedFeeds() {
                 init ? <LoadingSpinner/>
                     :
                     feeds.length === 0 ?
-                        <div>
-                            <div>아직 구독하는 RSS가 없어요 😃</div>
-                            <div>&emsp;</div>
-                            <div><NavLink to={'/rss'} style={{color: 'inherit', fontWeight: 500}}>RSS 추가하러 가기</NavLink>
-                            </div>
-                        </div>
+                        <div style={{marginTop: 20}}>아직 구독하는 RSS가 없어요 😃</div>
                         :
                         feeds.map(feed =>
                             <Feed
@@ -91,7 +91,7 @@ export default function SubscribedFeeds() {
             }
             <div id="bottomNotifier"
                  style={{display: 'none', marginTop: 100, marginBottom: 200}}>
-                더 이상 불러올 피드가 없습니다 🙌
+                모두 불러왔어요 🙌
             </div>
         </>
     );

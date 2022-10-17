@@ -33,7 +33,7 @@ export default function DefaultFeeds() {
                 setInit(false);
 
                 if (!hasNext) {
-                    document.getElementById('bottomNotifier').style.display = 'inherit';
+                    setTimeout(() => document.getElementById('bottomNotifier').style.display = 'inherit', 200)
                 }
             })
             .catch(error => {
@@ -79,7 +79,7 @@ export default function DefaultFeeds() {
                         ></Feed>
                     )
             }
-            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>더 이상 불러올 피드가 없습니다 🙌
+            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>모두 불러왔어요 🙌
             </div>
         </>
     );
