@@ -5,7 +5,7 @@ import Feed from "../components/Feed";
 import {NavLink} from "react-router-dom";
 
 export default function SubscribedFeeds() {
-    const [feeds, setFeeds] = useState([]);
+    const [feeds, setFeeds] = useState(new Set());
     let pageNumber = 0;
     let loading = false;
     let hasNext = true;
@@ -15,21 +15,26 @@ export default function SubscribedFeeds() {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/subscribes?page=${pageNumber}`,
             {withCredentials: true})
             .then(({data}) => {
-                const newFeeds = [];
-                data.feedResponses.forEach((feed) => newFeeds.push(feed));
-                setFeeds(presentFeeds => [...presentFeeds, ...newFeeds]);
+                setFeeds(presentFeeds => {
+                    const present = JSON.stringify(presentFeeds);
+
+                    const feedsToPush = []
+                    data.feedResponses.forEach(feed => {
+                            if (!present.includes(JSON.stringify(feed))) {
+                                feedsToPush.push(feed)
+                            }
+                        }
+                    );
+                    return [...presentFeeds, ...feedsToPush];
+                });
+
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
                 setInit(false);
 
                 if (!hasNext) {
-                    setTimeout(() => {
-                        const aa = document.querySelectorAll('.MuiCard-root')
-                        const target = aa[aa.length - 1]
-                        console.log(target)
-                        target.style.marginBottom = '100px';
-                    }, 100)
+                    document.getElementById('bottomNotifier').style.display = 'inherit';
                 }
             })
             .catch(error => {
@@ -84,6 +89,10 @@ export default function SubscribedFeeds() {
                             ></Feed>
                         )
             }
+            <div id="bottomNotifier"
+                 style={{display: 'none', marginTop: 100, marginBottom: 200}}>
+                더 이상 불러올 피드가 없습니다 🙌
+            </div>
         </>
     );
 }

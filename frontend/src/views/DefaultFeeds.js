@@ -14,21 +14,26 @@ export default function DefaultFeeds() {
         axios.get(`${process.env.REACT_APP_API_HOST}/api/feeds?page=${pageNumber}`,
             {withCredentials: true})
             .then(({data}) => {
-                const newFeeds = [];
-                data.feedResponses.forEach((feed) => newFeeds.push(feed));
-                setFeeds(presentFeeds => [...presentFeeds, ...newFeeds]);
+                setFeeds(presentFeeds => {
+                    const present = JSON.stringify(presentFeeds);
+
+                    const feedsToPush = []
+                    data.feedResponses.forEach(feed => {
+                            if (!present.includes(JSON.stringify(feed))) {
+                                feedsToPush.push(feed)
+                            }
+                        }
+                    );
+                    return [...presentFeeds, ...feedsToPush];
+                });
+
                 pageNumber = data.nextPageable.pageNumber;
                 hasNext = data.hasNext;
                 loading = false;
                 setInit(false);
 
                 if (!hasNext) {
-                    setTimeout(() => {
-                        const aa = document.querySelectorAll('.MuiCard-root')
-                        const target = aa[aa.length - 1]
-                        console.log(target)
-                        target.style.marginBottom = '100px';
-                    }, 100)
+                    document.getElementById('bottomNotifier').style.display = 'inherit';
                 }
             })
             .catch(error => {
@@ -74,6 +79,8 @@ export default function DefaultFeeds() {
                         ></Feed>
                     )
             }
+            <div id="bottomNotifier" style={{display: 'none', marginTop: 100, marginBottom: 200}}>더 이상 불러올 피드가 없습니다 🙌
+            </div>
         </>
     );
 }
