@@ -28,6 +28,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     implementation 'org.jsoup:jsoup:1.15.3'
 
     implementation 'com.querydsl:querydsl-jpa:5.0.0'
