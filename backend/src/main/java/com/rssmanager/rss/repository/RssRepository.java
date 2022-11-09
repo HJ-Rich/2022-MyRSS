@@ -13,7 +13,5 @@ public interface RssRepository extends Repository<Rss, Long> {
 
     List<Rss> findAll();
 
-    void deleteById(Long rssId);
-
     void saveAll(Iterable<Feed> newFeedsToSave);
 }
