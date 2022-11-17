@@ -2,6 +2,16 @@
 <configuration>
     <include resource="logback/logback-appenders.xml"/>
 
+    <springProfile name="test">
+        <logger name="com.rssmanager" level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
+
     <springProfile name="local">
         <logger name="com.rssmanager" level="DEBUG">
             <appender-ref ref="CONSOLE"/>

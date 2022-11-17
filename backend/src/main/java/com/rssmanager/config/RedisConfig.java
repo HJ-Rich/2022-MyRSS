@@ -19,15 +19,6 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     public String password;
 
-
-    @Bean
-    public RedisTemplate<String, String> redisTemplate(final RedisConnectionFactory connectionFactory) {
-        final var redisTemplate = new RedisTemplate<String, String>();
-        redisTemplate.setConnectionFactory(connectionFactory);
-
-        return redisTemplate;
-    }
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         final var configuration = new RedisStandaloneConfiguration();
@@ -36,5 +27,25 @@ public class RedisConfig {
         configuration.setPassword(this.password);
 
         return new LettuceConnectionFactory(configuration);
+    }
+
+    @Bean
+    public RedisTemplate<?, ?> redisTemplate(final RedisConnectionFactory connectionFactory) {
+        final var redisTemplate = new RedisTemplate<byte[], byte[]>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+
+        return redisTemplate;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
