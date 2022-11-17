@@ -7,18 +7,21 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Table(indexes = @Index(name = "idx_feed_link", columnList = "link", unique = true))
 @Entity
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @Column(length = 1000)
+    @Column(length = 750)
     private String link;
     private String description;
     private Date updateDate;

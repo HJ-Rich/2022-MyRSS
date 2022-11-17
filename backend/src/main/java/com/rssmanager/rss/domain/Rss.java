@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Table(indexes = @Index(name = "idx_rss_rss_url", columnList = "rssUrl", unique = true))
 @Entity
 public class Rss {
     @Id
