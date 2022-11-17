@@ -24,7 +24,6 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(RestDocumentationExtension.class)
 @WebMvcTest
 public class DocumentationTest {
-
     @MockBean
     protected RssService rssService;
     @MockBean
