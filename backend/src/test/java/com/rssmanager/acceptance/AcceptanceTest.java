@@ -3,7 +3,6 @@ package com.rssmanager.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.rssmanager.auth.controller.dto.LoginRequest;
-import com.rssmanager.config.EmbeddedRedisConfig;
 import com.rssmanager.support.DatabaseCleaner;
 import com.rssmanager.support.MockGithubExchange;
 import io.restassured.RestAssured;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Import(MockGithubExchange.class)
@@ -32,19 +30,15 @@ public class AcceptanceTest {
     private int port;
     @Autowired
     private DatabaseCleaner databaseCleaner;
-    @Autowired
-    private EmbeddedRedisConfig embeddedRedisConfig;
 
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
-        embeddedRedisConfig.start();
     }
 
     @AfterEach
     public void tearDown() {
         databaseCleaner.clear();
-        embeddedRedisConfig.stop();
     }
 
     protected String 로그인() {
@@ -52,7 +46,7 @@ public class AcceptanceTest {
         return ((RestAssuredResponseImpl) code).getCookie(COOKIE_KEY_FOR_SESSION);
     }
 
-    protected <T> ExtractableResponse<Response> 생성요청(final String url, @Nullable final T body) {
+    protected <T> ExtractableResponse<Response> 생성요청(final String url, final T body) {
         return RestAssured.given().log().all()
                 .body(body)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -62,8 +56,7 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    protected <T> ExtractableResponse<Response> 인증된_생성요청(final String url, final String cookie,
-                                                         @Nullable final T body) {
+    protected <T> ExtractableResponse<Response> 인증된_생성요청(final String url, final String cookie, final T body) {
         return RestAssured.given().log().all()
                 .body(body)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: optional:classpath:/2022-MyRSS-secret/jenkins-ci.yml
+
   profiles:
     active: test
 
@@ -21,7 +24,7 @@ spring:
         enabled: false
 
   redis:
-    host: localhost
+    host: 127.0.0.1
     port: 63799
     password:
 
