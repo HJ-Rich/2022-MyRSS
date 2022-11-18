@@ -5,7 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class RssResponses {
-    private final List<RssResponse> rssResponses;
+    private List<RssResponse> rssResponses;
+
+    protected RssResponses() {
+    }
 
     public RssResponses(final List<RssResponse> rssResponses) {
         this.rssResponses = rssResponses;

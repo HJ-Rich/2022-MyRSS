@@ -4,7 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class SubscribeResponse {
-    private final Long id;
+    private Long id;
+
+    public SubscribeResponse() {
+    }
 
     public SubscribeResponse(final Long id) {
         this.id = id;

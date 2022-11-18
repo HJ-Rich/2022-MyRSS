@@ -6,12 +6,15 @@ import lombok.Getter;
 
 @Getter
 public class RssResponse {
-    private final Long id;
-    private final String title;
-    private final String rssUrl;
-    private final String link;
-    private final String iconUrl;
-    private final boolean recommended;
+    private Long id;
+    private String title;
+    private String rssUrl;
+    private String link;
+    private String iconUrl;
+    private boolean recommended;
+
+    protected RssResponse() {
+    }
 
     @Builder
     public RssResponse(final Long id, final String title, final String rssUrl, final String link, final String iconUrl,

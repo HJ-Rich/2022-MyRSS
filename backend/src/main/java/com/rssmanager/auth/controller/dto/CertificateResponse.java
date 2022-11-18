@@ -1,27 +1,24 @@
 package com.rssmanager.auth.controller.dto;
 
 import com.rssmanager.member.controller.dto.MemberResponse;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class CertificateResponse {
-    private final boolean loggedIn;
-    private final MemberResponse member;
+    private boolean loggedIn;
+    private MemberResponse member;
 
+    protected CertificateResponse() {
+    }
+
+    @Builder
     public CertificateResponse(final boolean loggedIn, final MemberResponse member) {
         this.loggedIn = loggedIn;
         this.member = member;
     }
 
-    public CertificateResponse(final boolean loggedIn) {
-        this(loggedIn, null);
-    }
-
-    public static CertificateResponse from(final boolean loggedIn) {
-        return new CertificateResponse(loggedIn);
-    }
-
-    public static CertificateResponse from(final MemberResponse member) {
-        return new CertificateResponse(true, member);
+    public static CertificateResponse from(final boolean loggedIn, final MemberResponse memberResponse) {
+        return new CertificateResponse(loggedIn, memberResponse);
     }
 }

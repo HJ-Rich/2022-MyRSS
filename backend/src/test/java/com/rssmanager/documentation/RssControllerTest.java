@@ -19,7 +19,7 @@ class RssControllerTest extends DocumentationTest {
     void RSS_목록_조회() {
         // given
         final var richard = new Member(1L, 1L, "Richard", "image.png");
-        given(sessionManager.<Member>getAttribute("member")).willReturn(richard);
+        given(sessionManager.getLoginMember()).willReturn(richard);
 
         // when
         when(rssService.findByMember(richard)).thenReturn(
