@@ -2,7 +2,6 @@ package com.rssmanager.auth.support;
 
 import com.rssmanager.auth.annotation.LoginMember;
 import com.rssmanager.exception.UnauthorizedException;
-import com.rssmanager.member.domain.Member;
 import com.rssmanager.util.SessionManager;
 import java.util.Objects;
 import org.springframework.core.MethodParameter;
@@ -28,7 +27,7 @@ public class LoginMemberResolver implements HandlerMethodArgumentResolver {
                                   final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory)
             throws Exception {
 
-        final var member = sessionManager.<Member>getAttribute("member");
+        final var member = sessionManager.getLoginMember();
 
         if (Objects.isNull(member)) {
             throw new UnauthorizedException();

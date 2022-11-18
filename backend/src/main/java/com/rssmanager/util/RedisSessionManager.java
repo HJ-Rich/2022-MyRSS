@@ -9,18 +9,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 public class RedisSessionManager implements SessionManager {
-    private RedisSessionManager() {
-    }
+    private static final String MEMBER = "member";
 
-    @Override
-    public boolean isLoggedIn() {
-        return Objects.nonNull(createSessionWithFlagParameter(false));
+    private RedisSessionManager() {
     }
 
     @Override
     public HttpSession login(final Member member) {
         final var httpSession = createSessionWithFlagParameter(true);
-        httpSession.setAttribute("member", member);
+        httpSession.setAttribute(MEMBER, member);
 
         return httpSession;
     }
@@ -43,6 +40,11 @@ public class RedisSessionManager implements SessionManager {
         if (Objects.nonNull(httpSession)) {
             httpSession.invalidate();
         }
+    }
+
+    @Override
+    public Member getLoginMember() {
+        return getAttribute(MEMBER);
     }
 
     private HttpSession createSessionWithFlagParameter(boolean create) {
