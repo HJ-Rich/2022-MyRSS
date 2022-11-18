@@ -7,6 +7,7 @@ import com.rssmanager.rss.controller.dto.SubscribeRequest;
 import com.rssmanager.rss.controller.dto.SubscribeResponse;
 import com.rssmanager.rss.service.SubscribeService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,8 @@ public class SubscribeController {
     public ResponseEntity<SubscribeResponse> subscribe(@LoginMember final Member member,
                                                        @RequestBody final SubscribeRequest subscribeRequest) {
         final var subscribeResult = subscribeService.subscribe(member, subscribeRequest);
-        return ResponseEntity.ok(SubscribeResponse.from(subscribeResult));
+
+        return new ResponseEntity<>(SubscribeResponse.from(subscribeResult), HttpStatus.CREATED);
     }
 
     @GetMapping
