@@ -14,12 +14,16 @@ public class EmbeddedRedisConfig {
     public EmbeddedRedisConfig(final RedisConfig redisConfig) {
         this.redisServer = RedisServer.builder()
                 .port(redisConfig.getPort())
-                .setting("maxmemory 32MB")
+                .setting("maxmemory 8MB")
                 .build();
     }
 
     @PostConstruct
     public void start() {
+        if (redisServer.isActive()) {
+            return;
+        }
+
         redisServer.start();
     }
 

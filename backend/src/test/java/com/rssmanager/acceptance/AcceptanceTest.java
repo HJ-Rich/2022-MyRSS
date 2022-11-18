@@ -3,6 +3,7 @@ package com.rssmanager.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.rssmanager.auth.controller.dto.LoginRequest;
+import com.rssmanager.config.EmbeddedRedisConfig;
 import com.rssmanager.support.DatabaseCleaner;
 import com.rssmanager.support.MockGithubExchange;
 import io.restassured.RestAssured;
@@ -10,6 +11,7 @@ import io.restassured.internal.RestAssuredResponseImpl;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Collection;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,19 @@ public class AcceptanceTest {
     private int port;
     @Autowired
     private DatabaseCleaner databaseCleaner;
+    @Autowired
+    private EmbeddedRedisConfig embeddedRedisConfig;
 
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
+        embeddedRedisConfig.start();
+    }
+
+    @AfterEach
+    public void tearDown() {
         databaseCleaner.clear();
+        embeddedRedisConfig.stop();
     }
 
     protected String 로그인() {
