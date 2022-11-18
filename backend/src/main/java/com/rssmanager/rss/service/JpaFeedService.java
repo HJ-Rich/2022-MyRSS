@@ -5,7 +5,6 @@ import static com.rssmanager.rss.domain.QFeed.feed;
 import static com.rssmanager.rss.domain.QRss.rss;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.rssmanager.member.domain.Member;
 import com.rssmanager.rss.controller.dto.FeedResponse;
 import com.rssmanager.rss.controller.dto.FeedResponses;
 import com.rssmanager.rss.domain.Feed;
@@ -61,7 +60,7 @@ public class JpaFeedService implements FeedService {
     }
 
     private List<FeedResponse> convertToResponse(final Pageable pageable, final List<Feed> feeds) {
-        final var member = sessionManager.<Member>getAttribute("member");
+        final var member = sessionManager.getLoginMember();
         if (Objects.isNull(member)) {
             return feeds.stream()
                     .limit(pageable.getPageSize())
