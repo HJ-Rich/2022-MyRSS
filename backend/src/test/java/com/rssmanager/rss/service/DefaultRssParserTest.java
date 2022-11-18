@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class DefaultRssParserTest {
-
     @ParameterizedTest(name = "{0} -> {1}")
     @CsvSource(value = {
             "https://creampuffy.tistory.com/rss, https://creampuffy.tistory.com/rss",
