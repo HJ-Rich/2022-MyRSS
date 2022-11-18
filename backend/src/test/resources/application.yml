@@ -1,0 +1,40 @@
+spring:
+  profiles:
+    active: test
+
+  datasource:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+    hibernate:
+      ddl-auto: create
+
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  redis:
+    host: localhost
+    port: 63799
+    password:
+
+  session:
+    store-type: redis
+
+oauth:
+  github:
+    accessTokenUrl: https://github.com/login/oauth/access_token
+    userInfoUrl: https://api.github.com/user
+    clientId: test-client_id
+    clientSecret: test-client_secret
+
+logging:
+  level:
+    web: debug
