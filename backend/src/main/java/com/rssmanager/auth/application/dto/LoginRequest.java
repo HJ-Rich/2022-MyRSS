@@ -1,4 +1,4 @@
-package com.rssmanager.auth.controller.dto;
+package com.rssmanager.auth.application.dto;
 
 import lombok.Getter;
 
