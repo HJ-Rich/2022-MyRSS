@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class MemberTest {
     @DisplayName("Member 생성자는")
     @Nested
-    class ParentTestClass {
+    class Creator {
         @DisplayName("새로운 Member를 생성할 수 있다")
         @Test
         void create_new_member() {

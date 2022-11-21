@@ -20,7 +20,7 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "provider_id", length = 20, nullable = false, updatable = false, unique = true)
+    @Column(name = "providerId", length = 20, nullable = false, updatable = false, unique = true)
     private Long providerId;
     @Column(name = "name", length = 100)
     private String name;
