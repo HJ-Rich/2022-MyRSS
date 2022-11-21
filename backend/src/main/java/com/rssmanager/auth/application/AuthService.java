@@ -8,4 +8,6 @@ public interface AuthService {
     LoginResponse login(LoginRequest loginRequest);
 
     CertificateResponse certificate();
+
+    void invalidate();
 }

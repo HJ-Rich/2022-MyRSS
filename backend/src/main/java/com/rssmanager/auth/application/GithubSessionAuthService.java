@@ -40,4 +40,9 @@ public class GithubSessionAuthService implements AuthService {
                 MemberResponse.from(member)
         );
     }
+
+    @Override
+    public void invalidate() {
+        sessionManager.invalidate();
+    }
 }

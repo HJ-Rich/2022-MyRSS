@@ -4,7 +4,6 @@ import com.rssmanager.auth.application.AuthService;
 import com.rssmanager.auth.application.dto.CertificateResponse;
 import com.rssmanager.auth.application.dto.LoginRequest;
 import com.rssmanager.auth.application.dto.LoginResponse;
-import com.rssmanager.util.SessionManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     private final AuthService authService;
-    private final SessionManager sessionManager;
 
-    public AuthController(final AuthService authService, final SessionManager sessionManager) {
+    public AuthController(final AuthService authService) {
         this.authService = authService;
-        this.sessionManager = sessionManager;
     }
 
     @PostMapping("/login")
@@ -36,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/invalidate")
     public ResponseEntity<Void> invalidate() {
-        sessionManager.invalidate();
+        authService.invalidate();
         return ResponseEntity.ok().build();
     }
 }
