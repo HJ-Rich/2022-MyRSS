@@ -1,6 +1,5 @@
-package com.rssmanager.member.repository;
+package com.rssmanager.member.domain;
 
-import com.rssmanager.member.domain.Member;
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
