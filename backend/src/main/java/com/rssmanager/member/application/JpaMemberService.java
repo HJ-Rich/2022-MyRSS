@@ -1,7 +1,7 @@
-package com.rssmanager.member.service;
+package com.rssmanager.member.application;
 
 import com.rssmanager.member.domain.Member;
-import com.rssmanager.member.repository.MemberRepository;
+import com.rssmanager.member.domain.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,4 @@
-package com.rssmanager.member.service;
+package com.rssmanager.member.application;
 
 import com.rssmanager.member.domain.Member;
 

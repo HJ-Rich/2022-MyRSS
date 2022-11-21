@@ -4,7 +4,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 import com.rssmanager.auth.service.AuthService;
-import com.rssmanager.member.service.MemberService;
+import com.rssmanager.member.application.MemberService;
 import com.rssmanager.rss.service.BookmarkService;
 import com.rssmanager.rss.service.FeedService;
 import com.rssmanager.rss.service.RssService;
