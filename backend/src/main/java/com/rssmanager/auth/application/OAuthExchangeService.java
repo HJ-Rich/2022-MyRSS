@@ -1,4 +1,4 @@
-package com.rssmanager.auth.service;
+package com.rssmanager.auth.application;
 
 import com.rssmanager.auth.controller.dto.LoginRequest;
 import com.rssmanager.member.domain.Member;

@@ -1,9 +1,9 @@
 package com.rssmanager.auth.controller;
 
+import com.rssmanager.auth.application.AuthService;
 import com.rssmanager.auth.controller.dto.CertificateResponse;
 import com.rssmanager.auth.controller.dto.LoginRequest;
 import com.rssmanager.auth.controller.dto.LoginResponse;
-import com.rssmanager.auth.service.AuthService;
 import com.rssmanager.util.SessionManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
