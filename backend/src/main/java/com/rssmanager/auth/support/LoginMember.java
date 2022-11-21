@@ -1,4 +1,4 @@
-package com.rssmanager.auth.annotation;
+package com.rssmanager.auth.support;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

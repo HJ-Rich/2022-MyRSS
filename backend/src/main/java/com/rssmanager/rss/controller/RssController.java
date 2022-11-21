@@ -1,6 +1,6 @@
 package com.rssmanager.rss.controller;
 
-import com.rssmanager.auth.annotation.LoginMember;
+import com.rssmanager.auth.support.LoginMember;
 import com.rssmanager.member.domain.Member;
 import com.rssmanager.rss.controller.dto.RssCreateRequest;
 import com.rssmanager.rss.controller.dto.RssResponse;

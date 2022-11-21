@@ -1,6 +1,5 @@
 package com.rssmanager.auth.support;
 
-import com.rssmanager.auth.annotation.LoginMember;
 import com.rssmanager.exception.UnauthorizedException;
 import com.rssmanager.util.SessionManager;
 import java.util.Objects;
