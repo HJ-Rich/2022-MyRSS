@@ -2,7 +2,7 @@ package com.rssmanager.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.rssmanager.auth.controller.dto.LoginRequest;
+import com.rssmanager.auth.application.dto.LoginRequest;
 import com.rssmanager.support.DatabaseCleaner;
 import com.rssmanager.support.MockGithubExchange;
 import io.restassured.RestAssured;

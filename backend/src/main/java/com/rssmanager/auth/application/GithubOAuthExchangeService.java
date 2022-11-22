@@ -1,8 +1,8 @@
-package com.rssmanager.auth.service;
+package com.rssmanager.auth.application;
 
-import com.rssmanager.auth.controller.dto.LoginRequest;
-import com.rssmanager.auth.service.dto.GithubAccessTokenResponse;
-import com.rssmanager.auth.service.dto.GithubUserInfoResponse;
+import com.rssmanager.auth.application.dto.GithubAccessTokenResponse;
+import com.rssmanager.auth.application.dto.GithubUserInfoResponse;
+import com.rssmanager.auth.application.dto.LoginRequest;
 import com.rssmanager.config.GithubOAuthConfig;
 import com.rssmanager.member.domain.Member;
 import java.util.Map;

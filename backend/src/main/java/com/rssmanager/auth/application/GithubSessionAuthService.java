@@ -1,8 +1,8 @@
-package com.rssmanager.auth.service;
+package com.rssmanager.auth.application;
 
-import com.rssmanager.auth.controller.dto.CertificateResponse;
-import com.rssmanager.auth.controller.dto.LoginRequest;
-import com.rssmanager.auth.controller.dto.LoginResponse;
+import com.rssmanager.auth.application.dto.CertificateResponse;
+import com.rssmanager.auth.application.dto.LoginRequest;
+import com.rssmanager.auth.application.dto.LoginResponse;
 import com.rssmanager.member.application.MemberService;
 import com.rssmanager.member.controller.dto.MemberResponse;
 import com.rssmanager.util.SessionManager;
@@ -39,5 +39,10 @@ public class GithubSessionAuthService implements AuthService {
                 Objects.nonNull(member),
                 MemberResponse.from(member)
         );
+    }
+
+    @Override
+    public void invalidate() {
+        sessionManager.invalidate();
     }
 }

@@ -1,4 +1,4 @@
-package com.rssmanager.auth.service.dto;
+package com.rssmanager.auth.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

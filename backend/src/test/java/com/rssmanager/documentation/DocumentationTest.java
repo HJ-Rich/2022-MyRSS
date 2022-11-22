@@ -3,7 +3,7 @@ package com.rssmanager.documentation;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
-import com.rssmanager.auth.service.AuthService;
+import com.rssmanager.auth.application.AuthService;
 import com.rssmanager.member.application.MemberService;
 import com.rssmanager.rss.service.BookmarkService;
 import com.rssmanager.rss.service.FeedService;
