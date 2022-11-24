@@ -17,8 +17,8 @@ export default function SubscribeModal() {
             return;
         }
 
-        axios.post(`${process.env.REACT_APP_API_HOST}/api/subscribes`,
-            {url: input}, {withCredentials: true})
+        axios.post(`/api/subscribes`,
+            {url: input})
             .then(({data}) => {
                 handleClose()
                 setOpenSuccess(true)

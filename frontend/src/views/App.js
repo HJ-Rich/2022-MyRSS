@@ -12,6 +12,7 @@ import Social from "./Social";
 import Bookmarks from "./Bookmarks";
 import ManageRss from "./ManageRss";
 import HowTo from "./HowTo";
+import axiosConfig from "../config/AxiosConfig";
 
 const darkTheme = createTheme({
     palette: {
@@ -22,10 +23,10 @@ const darkTheme = createTheme({
 function App() {
     const [loginStatus, setLoginStatus] = useState();
     const [userInfo, setUserInfo] = useState({});
+    axiosConfig();
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_API_HOST}/api/auth/certificate`,
-            {}, {withCredentials: true})
+        axios.post(`/api/auth/certificate`)
             .then(({data}) => {
                 setLoginStatus(data.loggedIn);
                 setUserInfo(data.member);

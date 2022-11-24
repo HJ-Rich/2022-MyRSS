@@ -16,8 +16,8 @@ export default function Feed(props) {
 
     const handleBookmark = () => {
         if (!bookmark) {
-            axios.post(`${process.env.REACT_APP_API_HOST}/api/bookmarks`,
-                {id: props.id}, {withCredentials: true})
+            axios.post(`/api/bookmarks`,
+                {id: props.id})
                 .then(({data}) => {
                     setOpen(true);
                     setBookmark(true);
@@ -25,8 +25,7 @@ export default function Feed(props) {
         }
 
         if (bookmark) {
-            axios.delete(`${process.env.REACT_APP_API_HOST}/api/bookmarks?feedId=${props.id}`,
-                {withCredentials: true})
+            axios.delete(`/api/bookmarks?feedId=${props.id}`)
                 .then(({data}) => {
                     setOpenUn(true);
                     setBookmark(false);

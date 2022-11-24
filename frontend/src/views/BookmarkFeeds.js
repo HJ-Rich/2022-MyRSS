@@ -13,8 +13,7 @@ export default function BookmarkFeeds() {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/bookmarks?page=${pageNumber}`,
-            {withCredentials: true})
+        axios.get(`/api/bookmarks?page=${pageNumber}`)
             .then(({data}) => {
                 if (pageNumber === 0 && data.bookmarks.length === 0) {
                     isEmpty = true;

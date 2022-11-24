@@ -4,8 +4,7 @@ import axios from "axios";
 
 export default function Profile(props) {
     function logoutHandler() {
-        axios.post(`${process.env.REACT_APP_API_HOST}/api/auth/invalidate`,
-            {}, {withCredentials: true})
+        axios.post(`/api/auth/invalidate`)
             .then(({data}) => window.location.href = '/')
     }
 
