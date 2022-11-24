@@ -12,8 +12,7 @@ export default function SubscribedFeeds() {
     const [init, setInit] = useState(true);
 
     const loadMoreFeeds = (() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/subscribes?page=${pageNumber}`,
-            {withCredentials: true})
+        axios.get(`/api/subscribes?page=${pageNumber}`)
             .then(({data}) => {
                 if (pageNumber === 0 && data.feedResponses.length === 0) {
                     isEmpty = true;

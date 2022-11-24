@@ -1,6 +1,7 @@
 package com.rssmanager.member.controller.dto;
 
 import com.rssmanager.member.domain.Member;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,6 +19,10 @@ public class MemberResponse {
     }
 
     public static MemberResponse from(final Member member) {
+        if (Objects.isNull(member)) {
+            return new MemberResponse(null, null, null);
+        }
+
         return MemberResponse.builder()
                 .id(member.getId())
                 .nickname(member.getName())

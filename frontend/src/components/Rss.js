@@ -10,8 +10,7 @@ export default function Rss() {
     const [init, setInit] = useState(true);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/rss`,
-            {withCredentials: true})
+        axios.get(`/api/rss`)
             .then(({data}) => {
                 setRss(data.rssResponses)
                 setInit(false);
@@ -25,9 +24,8 @@ export default function Rss() {
 
     const handleSubscribe = (e) => {
         const requestUrl = e.target.previousSibling.querySelector('input').value;
-        axios.post(`${process.env.REACT_APP_API_HOST}/api/subscribes`,
-            {url: requestUrl},
-            {withCredentials: true})
+        axios.post(`/api/subscribes`,
+            {url: requestUrl})
             .then(({data}) => {
                 location.reload();
             })

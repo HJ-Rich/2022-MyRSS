@@ -6,16 +6,14 @@ import axios from "axios";
 export default function RssComponent(props) {
     const handleDelete = () => {
         axios.delete(
-            `${process.env.REACT_APP_API_HOST}/api/rss?id=${props.id}`,
-            {withCredentials: true})
+            `/api/rss?id=${props.id}`)
             .then(({data}) => {
                 location.reload()
             }).catch(error => console.log(error))
     }
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_HOST}/api/rss`,
-            {withCredentials: true})
+        axios.get(`/api/rss`)
             .then(({data}) => {
                 setRss(data.rssResponses)
                 setInit(false);

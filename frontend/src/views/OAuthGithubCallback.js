@@ -6,14 +6,8 @@ export default function OAuthGithubCallback() {
     const [searchParams] = useSearchParams();
     const code = searchParams.get("code");
 
-    axios.post(`${process.env.REACT_APP_API_HOST}/api/auth/login`,
-        {
-            code: code
-        },
-        {
-            headers: {"Content-Type": "application/json"},
-            withCredentials: true
-        }
+    axios.post(`/api/auth/login`,
+        {code: code}
     ).then(({data}) => {
         window.location.href = '/'
     });
